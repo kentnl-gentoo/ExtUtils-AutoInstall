@@ -1,8 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #15 $ $Change: 2801 $ $DateTime: 2002/12/20 03:42:23 $
+# $Revision: #22 $ $Change: 2916 $ $DateTime: 2002/12/25 11:20:00 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.43';
+$ExtUtils::AutoInstall::VERSION = '0.44';
 
 use strict;
 
@@ -15,32 +15,34 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.43 of B<ExtUtils::AutoInstall>,
-released December 20, 2002.
+This document describes version 0.44 of B<ExtUtils::AutoInstall>,
+released December 25, 2002.
 
 =head1 SYNOPSIS
 
 In F<Makefile.PL>:
 
-    # ExtUtils::AutoInstall Bootstrap Code, version 4.
-    BEGIN{my$p='ExtUtils::AutoInstall';my$v=.30;eval"use $p $v;1"or
-    ($ENV{PERL_EXTUTILS_AUTOINSTALL}!~/--(?:default|skip|testonly)/
-    and(-t STDIN)or eval"use ExtUtils::MakeMaker;WriteMakefile('PR'
-    .'EREQ_PM'=>{'$p',$v});1"and exit)and print"==> $p $v needed. "
-    ."Install it from CPAN? [Y/n] "and<STDIN>!~/^n/i and print"***"
-    ." Fetching $p\n"and do{eval{require CPANPLUS;CPANPLUS::install
-    $p};eval"use $p $v;1"or eval{require CPAN;CPAN::install$p};eval
-    "use $p $v;1"or die"Please install $p $v manually first...\n"}}
+    # ExtUtils::AutoInstall Bootstrap Code, version 5.
+    BEGIN{my$p='ExtUtils::AutoInstall';my$v=0.40;eval"use $p $v;1
+    "or do{my$e=$ENV{PERL_EXTUTILS_AUTOINSTALL};(!defined($e)||$e
+    !~m/--(?:default|skip|testonly)/and-t STDIN or eval"use Ext".
+    "Utils::MakeMaker;WriteMakefile('PREREQ_PM'=>{'$p',$v});1"and
+    exit)and print"==> $p $v required. Install it from CPAN? [Y".
+    "/n] "and<STDIN>!~/^n/i and print"*** Installing $p\n"and do{
+    eval{require CPANPLUS;CPANPLUS::install $p};eval"use $p $v;1"
+    or eval{require CPAN;CPAN::install$p};eval"use $p $v;1"or die
+    "*** Please install $p $v manually from cpan.org first.\n"}}}
 
-    # pre-install handler; takes $module_name and $version
-    sub MY::preinstall  { return 1; }	# return false to skip install
-    # post-install handler; takes $module_name, $version, and $success
-    sub MY::postinstall { ... }
+    # optional pre-install handler; takes $module_name and $version
+    # sub MY::preinstall  { return 1; }	# return false to skip install
+
+    # optional post-install handler; takes $module_name, $version, $success
+    # sub MY::postinstall { return; }	# the return value doesn't matter
 
     # the above handlers must be declared before the 'use' statement
     use ExtUtils::AutoInstall (
 	-version	=> '0.40',	# required AutoInstall version
-	                                # usually 0.30 is sufficient
+	                                # usually 0.40 is sufficient
 	-config		=> {
 	    make_args	=> '--hello'	# option(s) for CPAN::Config
 	    force	=> 1,		# pseudo-option to force install
@@ -137,13 +139,31 @@ If you have the B<CPANPLUS> package installed in your system, it is
 preferred by default over B<CPAN>; it also accepts some extra options
 (e.g. C<-target =E<gt> 'skiptest', -skiptest =E<gt> 1> to skip testing).
 
-All modules scheduled to be installed will be deleted from C<%INC> first, so
-B<ExtUtils::MakeMaker> will check the newly installed modules.
+All modules scheduled to be installed will be deleted from C<%INC>
+first, so B<ExtUtils::MakeMaker> will check the newly installed modules.
 
 Additionally, you could use the C<make installdeps> target to install
 the modules, and the C<make checkdeps> target to check dependencies
 without actually installing them; the C<perl Makefile.PL --checkdeps>
 command has an equivalent effect.
+
+If the F<Makefile.PL> itself needs to use an independent module (e.g.
+B<Acme::KillarApp>, v1.21 or greater), then use something like below:
+
+    BEGIN {
+	require ExtUtils::AutoInstall;
+	# the first argument is an arrayref of the -config flags
+	ExtUtils::AutoInstall->install([], 'Acme::KillerApp' => 1.21);
+    }
+    use Acme::KillerApp 1.21;
+
+    ExtUtils::AutoInstall->import(
+	# ... arguments as usual ...
+    );
+
+Note the version test in the use clause; if you are so close to the
+cutting edge that B<Acme::KillerApp> 1.20 is the latest version on CPAN,
+this will prevent your module from go awry.
 
 =head2 User-Defined Hooks
 

@@ -1,8 +1,16 @@
+0.44:
+    - The bootstrap script is now -w safe, thanks to Jonathan.
+    - The recommended version in bootstrap script is now 0.40.
+    - Added documentation showing how to install some dependencies
+      before the rest of Makefile.PL is executed.
+    - The optional status of pre/post-install hooks is clarified
+      in the POD, again thanks to Jonathan Leffler.
+
 0.43:
     - Jonathan Leffler implemented the postamble() function as a way to
       work around problems when using ExtUtils::AutoInstall with modules
       that require their own MY::postamble function.
-    - Whitespec cleanup, also courtesy of Jonathan Leffler.
+    - Whitespace cleanup, also courtesy of Jonathan Leffler.
     - The ACKNOWLEDGEMENTS section has been tidied up in favor of a
       separate AUTHORS file.
 
