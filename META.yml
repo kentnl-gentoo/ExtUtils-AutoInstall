@@ -1,5 +1,5 @@
 name: ExtUtils-AutoInstall
-version: 0.58
+version: 0.59
 abstract: Automatic install of dependencies via CPAN
 author: Autrijus Tang (autrijus@autrius.org)
 license: perl

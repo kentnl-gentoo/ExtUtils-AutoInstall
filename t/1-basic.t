@@ -13,10 +13,7 @@ my @prompts = qw/y n n y y/;
 
 use ExtUtils::MakeMaker;
 sub ExtUtils::MakeMaker::WriteMakefile { $mm_args = {@_} }
-sub ExtUtils::MakeMaker::prompt ($;$)  {
-    ok($_[1], shift(@prompts));
-    return 'n';
-}
+sub ExtUtils::MakeMaker::prompt ($;$) { return 'n' }
 
 # tiehandle trick to intercept STDOUT.
 sub PRINT  { my $self = shift; $$self .= join '', @_; }
@@ -33,6 +30,10 @@ select(*$fh);
 $ENV{PERL_EXTUTILS_AUTOINSTALL} = '';
 require ExtUtils::AutoInstall;
 ExtUtils::AutoInstall::_accept_default(0);
+*ExtUtils::AutoInstall::_prompt  = sub {
+    ok($_[1], shift(@prompts));
+    return 'n';
+};
 
 # calls the module.
 ok(eval <<'.', $@);
