@@ -1,7 +1,7 @@
 name: ExtUtils-AutoInstall
-version: 0.60
+version: 0.61
 abstract: Automatic install of dependencies via CPAN
-author: Autrijus Tang (autrijus@autrius.org)
+author: Autrijus Tang <autrijus@autrius.org>
 license: perl
 distribution_type: module
 requires:
@@ -12,4 +12,4 @@ requires:
 no_index:
   directory:
     - inc
-generated_by: Module::Install version 0.350
+generated_by: Module::Install version 0.35
