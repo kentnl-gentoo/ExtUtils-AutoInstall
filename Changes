@@ -1,4 +1,28 @@
 ____________________________________________________________________________
+[  8105] By: autrijus                              on 2003/09/13  20:57:40
+        Log: * this be 0.54.
+	   ! lib/ExtUtils/AutoInstall.pm
+____________________________________________________________________________
+[  8104] By: autrijus                              on 2003/09/13  20:56:16
+        Log: * oops, I missed a place that's still using
+	       .autoinstall.failed
+             instead of the correct .#autoinstall.failed.
+	   ! lib/ExtUtils/AutoInstall.pm
+____________________________________________________________________________
+[  8102] By: autrijus                              on 2003/09/13  20:54:01
+        Log: * coraline points out that "needed" when we want version
+	       >0.00
+             for some module is uncllear for optional modules. nix it.
+	   ! lib/ExtUtils/AutoInstall.pm
+____________________________________________________________________________
+[  7976] By: autrijus                              on 2003/09/08  09:56:26
+        Log: * missing comma, reported by Bryan Dumm
+	   ! lib/ExtUtils/AutoInstall.pm
+____________________________________________________________________________
+[  7914] By: autrijus                              on 2003/09/06  14:42:30
+        Log: * oops, uses the correct name.
+	   ! Makefile.PL
+____________________________________________________________________________
 [  7913] By: autrijus                              on 2003/09/06  14:41:10
         Log: * This be 0.53.
              * upgrade to less noisy tests.
