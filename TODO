@@ -1,5 +1,5 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/TODO $ $Author: autrijus $
-# $Revision: #1 $ $Change: 1 $ $DateTime: 2002/06/11 08:35:12 $
+# $Revision: #2 $ $Change: 1340 $ $DateTime: 2002/10/12 08:08:13 $
 
 - Request for a specific version instead of the latest.
 - A cleaner self-boostrap block.

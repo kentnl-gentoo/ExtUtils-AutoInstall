@@ -1,5 +1,5 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/README $ $Author: autrijus $
-# $Revision: #1 $ $Change: 1 $ $DateTime: 2002/06/11 08:35:12 $
+# $Revision: #2 $ $Change: 1340 $ $DateTime: 2002/10/12 08:08:13 $
 
 This is the README file for ExtUtils::AutoInstall, a module to
 let Makefile.PL automatically install dependencies via CPAN or

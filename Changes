@@ -1,3 +1,11 @@
+0.42:
+    - Added ->missing_modules that returns @Missing.
+    - Added ->do_install that starts installation right after import.
+    - Fixed Socket.pm connectivity detection bug.
+
+0.41:
+    - Support for John Peacock's version.pm for non-decimal versions.
+
 0.40:
     - User-defined pre-/post-installation handlers, as suggested by
       Bryan Dumm.
@@ -16,11 +24,11 @@
     
 0.30: 
 
-    - Changed the boostrap code to allow non-interactive installs.
+    - Changed the bootstrap code to allow non-interactive installs.
 
 0.29: 
 
-    - Change the boostrap code to allow CPANPLUS.
+    - Change the bootstrap code to allow CPANPLUS.
     - Fixed Sort::Versions's idea of 0.55 > 0.7.
     - Probing of installation success/failure for CPANPLUS was wrong.
     - Don't use modobj methods; unavailable before CPANPLUS 0.03.
@@ -41,16 +49,16 @@
 0.26:
 
     - Bootstrap now prompts instead of silently grabs the module.
-    - Similarily, -version update also confirms with user.
+    - Similarly, -version update also confirms with user.
     - -core now double-checks with user instead of force install.
     - Introduced PERL_EXTUTILS_AUTOINSTALL environment variable.
-    - Added --defaultdeps makefile.pl argument to accept default.
+    - Added --defaultdeps argument for Makefile.PL to accept defaults.
     - The 'deps' part of arguments are now optional.
     - Our Makefile.PL is now self-bootstrapping.
     - The 'force' pseudo-option is implemented.
 
 0.25:
-    - Implements --skipdeps, which skips -core and all dep checkings.
+    - Implements --skipdeps, which skips -core and all dep checks.
     - Implements --installdeps and --checkdeps flags.
     - Updates autoinstall to prefer CPANPLUS by default.
 

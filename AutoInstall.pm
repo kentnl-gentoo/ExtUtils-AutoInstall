@@ -1,8 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #9 $ $Change: 1323 $ $DateTime: 2002/10/11 09:40:48 $
+# $Revision: #11 $ $Change: 1502 $ $DateTime: 2002/10/17 20:21:45 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.40';
+$ExtUtils::AutoInstall::VERSION = '0.42';
 
 use strict;
 
@@ -15,8 +15,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.40 of B<ExtUtils::AutoInstall>,
-released October 11, 2002.
+This document describes version 0.42 of B<ExtUtils::AutoInstall>,
+released October 18, 2002.
 
 =head1 SYNOPSIS
 
@@ -181,10 +181,10 @@ cause dependency problems if you are using a fine-tuned directory
 structure for your site.  Please consult L<CPAN/FAQ> for an explanation
 in detail.
 
-If B<Sort::Versions> is available, it will be used to compare the
-required version with the existing module's version and the CPAN
-module's.  Otherwise it silently falls back to use I<cmp>.  This may
-cause inconsistent behaviours in pathetic situations.
+If either B<version> or B<Sort::Versions> is available, they will be
+used to compare the required version with the existing module's version
+and the CPAN module's.  Otherwise it silently falls back to use I<cmp>.
+This may cause inconsistent behaviours in pathetic situations.
 
 B<Inline::MakeMaker> is not happy with this module, since it prohibits
 competing C<MY::postamble> functions.  Patches welcome.
@@ -230,6 +230,17 @@ my ($Config, $CheckOnly, $SkipInstall, $AcceptDefault, $TestOnly);
 
 $AcceptDefault = 1 unless -t STDIN; # non-interactive session
 _init();
+
+sub missing_modules {
+    return @Missing;
+}
+
+sub do_install {
+    __PACKAGE__->install(
+	[ UNIVERSAL::isa($Config, 'HASH') ? %{$Config} : @{$Config}],
+	@Missing,
+    );
+}
 
 # initialize various flags, and/or perform install
 sub _init {
@@ -613,7 +624,7 @@ sub _connected_to {
     my $site = shift;
 
     return (
-	( _load('Socket') and Socket::inet_aton('$site') ) or _prompt(qq(
+	( _load('Socket') and Socket::inet_aton($site) ) or _prompt(qq(
 *** Your host cannot resolve the domain name '$site', which
     probably means the Internet connections are unavailable.
 ==> Should we try to install the required module(s) anyway?), 'n'
@@ -654,10 +665,19 @@ sub _version_check {
 
     $cur =~ s/\s+$//;
 
-    if ($Sort::Versions::VERSION or defined(_load('Sort::Versions'))) {
-	# use Sort::Versions as the sorting algorithm for a.b.c versions
-	return ((Sort::Versions::versioncmp($cur, $min) != -1) ? $cur : undef)
-	    if $cur =~ /\..*\./ or $min =~ /\..*\./;
+    # check for version numbers that are not in decimal format
+    if (ref($cur) or ref($min) or $cur =~ /v|\..*\./ or $min =~ /v|\..*\./) {
+	if ($version::VERSION or defined(_load('version'))) {
+	    # use version.pm if it is installed.
+	    return ((version->new($cur) >= version->new($min)) ? $cur : undef);
+	}
+	elsif ($Sort::Versions::VERSION or defined(_load('Sort::Versions'))) {
+	    # use Sort::Versions as the sorting algorithm for a.b.c versions
+	    return ((Sort::Versions::versioncmp($cur, $min) != -1) ? $cur : undef);
+	}
+
+	warn "Cannot reliably compare non-decimal formatted versions.\n".
+	     "Please install version.pm or Sort::Versions.\n";
     }
 
     # plain comparison

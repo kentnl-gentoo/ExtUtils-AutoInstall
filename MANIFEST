@@ -5,4 +5,5 @@ Makefile.PL
 README
 SIGNATURE
 TODO
+t/0-signature.t
 t/AutoInstall.t
