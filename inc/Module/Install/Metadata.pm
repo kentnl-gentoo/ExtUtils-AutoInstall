@@ -1,5 +1,5 @@
 # $File: //depot/cpan/Module-Install/lib/Module/Install/Metadata.pm $ $Author: autrijus $
-# $Revision: #11 $ $Change: 1291 $ $DateTime: 2003/03/07 08:56:07 $ vim: expandtab shiftwidth=4
+# $Revision: #14 $ $Change: 1315 $ $DateTime: 2003/03/08 02:43:21 $ vim: expandtab shiftwidth=4
 
 package Module::Install::Metadata;
 use base 'Module::Install::Base';
@@ -11,7 +11,10 @@ use vars qw($VERSION);
 
 sub Meta { shift }
 
-foreach my $key (qw(name version abstract author license)) {
+my @scalar_keys = qw(name version abstract author license distribution_type);
+my @tuple_keys  = qw(build_requires requires recommends);
+
+foreach my $key (@scalar_keys) {
     *$key = sub {
         my $self = shift;
         return $self->{values}{$key} unless @_;
@@ -20,7 +23,7 @@ foreach my $key (qw(name version abstract author license)) {
     };
 }
 
-foreach my $key (qw(build_requires requires recommends)) {
+foreach my $key (@tuple_keys) {
     *$key = sub {
         my ($self, $module, $version) = (@_, 0, 0);
         return $self->{values}{$key} unless $module;
@@ -42,23 +45,25 @@ sub _dump {
     my $self = shift;
     my $package = ref($self->_top);
     my $version = $self->_top->VERSION;
-    return <<"END";
-name: $self->{values}{name}
-version: $self->{values}{version}
-abstract: $self->{values}{abstract}
-author: $self->{values}{author}
-license: $self->{values}{license}
-build_requires: ${\ join '', map "\n  $_->[0]: $_->[1]", @{$self->{values}{build_requires}}}
-requires: ${\ join '', map "\n  $_->[0]: $_->[1]", @{$self->{values}{requires}}}
-recommends: ${\ join '', map "\n  $_->[0]: $_->[1]", @{$self->{values}{recommends}}}
-generated_by: $package version $version
-END
+    my %values = %{$self->{values}};
+    $values{distribution_type} ||= 'module';
+
+    my $dump = '';
+    foreach my $key (@scalar_keys) {
+        $dump .= "$key: $values{$key}\n" if exists $values{$key};
+    }
+    foreach my $key (@tuple_keys) {
+        next unless exists $values{$key};
+        $dump .= "$key:\n";
+        $dump .= "  $_->[0]: $_->[1]\n" for @{$values{$key}};
+    }
+
+    return($dump . "generated_by: $package version $version\n");
 }
 
 sub write {
     my $self = shift;
-    return $self
-      if $self->initialized;
+    return $self unless $self->admin;
     return if -f "META.yml";
     warn "Creating META.yml\n";
     open META, "> META.yml" or die $!;

@@ -1,5 +1,5 @@
 # $File: //depot/cpan/Module-Install/lib/Module/Install.pm $ $Author: autrijus $
-# $Revision: #32 $ $Change: 1290 $ $DateTime: 2003/03/07 08:55:15 $ vim: expandtab shiftwidth=4
+# $Revision: #39 $ $Change: 1314 $ $DateTime: 2003/03/08 02:41:17 $ vim: expandtab shiftwidth=4
 
 package Module::Install;
 $VERSION = '0.20';
@@ -7,15 +7,18 @@ $VERSION = '0.20';
 use strict 'vars';
 use File::Find;
 
-unshift @INC, 'inc';
 @inc::Module::Install::ISA = 'Module::Install';
 
 sub import {
     my $class = $_[0];
     my $self = $class->new(@_[1..$#_]);
 
-    if (!-f $self->{file}) {
-        $self->admin->init;
+    unless (-f $self->{file}) {
+        require "$self->{path}/$self->{dispatch}.pm";
+        ($self->{admin} ||=
+            "$self->{name}::$self->{dispatch}"->new(_top => $self)
+        )->init;
+        @_ = ($class, _self => $self);
         goto &{"$self->{name}::import"};
     }
 
@@ -24,9 +27,9 @@ sub import {
 
 sub autoload {
     my $self = shift;
-    my $auto_ref = \${caller(0) . "::AUTOLOAD"};
+    my $caller = caller;
     sub {
-        $$auto_ref =~ /([^:]+)$/ or die "Cannot load $$auto_ref";
+        ${"$caller\::AUTOLOAD"} =~ /([^:]+)$/ or die "Cannot autoload $caller";
         unshift @_, ($self, $1);
         goto &{$self->can('call')} unless uc($1) eq $1;
     };
@@ -35,26 +38,26 @@ sub autoload {
 sub new {
     my ($class, %args) = @_;
 
+    return $args{_self} if $args{_self};
+
     $args{dispatch} ||= 'Admin';
     $args{prefix}   ||= 'inc';
 
     $class =~ s/^\Q$args{prefix}\E:://;
     $args{name}     ||= $class;
-    $args{version}  ||= $class->VERSION,
-    ($args{path}      = $args{name}) =~ s!::!/!g unless $args{path};
+    $args{version}  ||= $class->VERSION;
+    unless ($args{path}) {
+        $args{path}   = $args{name};
+        $args{path}  =~ s!::!/!g;
+    }
     $args{file}     ||= "$args{prefix}/$args{path}.pm";
 
     bless(\%args, $class);
 }
 
-sub admin {
-    my $self = shift;
-    eval { require "$self->{path}/$self->{dispatch}.pm"; 1 } or return;
-    $self->{admin} ||= "$self->{name}::$self->{dispatch}"->new(_top => $self);
-}
-
 sub call {
-    my ($self, $method) = (+shift, +shift);
+    my $self   = shift;
+    my $method = shift;
     my $obj = $self->load($method) or return;
 
     unshift @_, $obj;
@@ -72,8 +75,10 @@ sub load {
         return $obj if $obj->can($method);
     }
 
-    my $admin = $self->admin
-        or die "Cannot load $self->{dispatch} for $self->{name}:\n$@";
+    my $admin = $self->{admin} or die << "END";
+The '$method' method does not exist in the '$self->{prefix}' path!
+Please remove the '$self->{prefix}' directory and run $0 again to load it.
+END
 
     my $obj = $admin->load($method, 1);
     push @{$self->{extensions}}, $obj;
@@ -82,30 +87,35 @@ sub load {
 }
 
 sub load_extensions {
-    my ($self, $basepath, $top) = @_;
+    my ($self, $path, $top_obj) = @_;
 
-    foreach my $rv ($self->find_extensions($basepath)) {
-        my ($pathname, $pkg) = @{$rv};
+    unshift @INC, $self->{prefix}
+        unless grep { $_ eq $self->{prefix} } @INC;
+
+    local @INC = ($path, @INC);
+    foreach my $rv ($self->find_extensions($path)) {
+        my ($file, $pkg) = @{$rv};
         next if $self->{pathnames}{$pkg};
-        $self->{pathnames}{$pkg} = $pathname;
 
-        do $pathname; if ($@) { warn $@; next }
-        push @{$self->{extensions}}, $pkg->new( _top => $top );
+        eval { require $file; 1 } or (warn($@), next);
+        $self->{pathnames}{$pkg} = $INC{$file};
+        push @{$self->{extensions}}, $pkg->new( _top => $top_obj );
     }
 }
 
 sub find_extensions {
-    my ($self, $basepath) = @_;
+    my ($self, $path) = @_;
     my @found;
 
     find(sub {
-        my $name = $File::Find::name;
-        return unless $name =~ m!^\Q$basepath\E/(.+)\.pm\Z!is;
+        my $file = $File::Find::name;
+        return unless $file =~ m!^\Q$path\E/(.+)\.pm\Z!is;
         return if $1 eq $self->{dispatch};
 
+        $file = "$self->{path}/$1.pm";
         my $pkg = "$self->{name}::$1"; $pkg =~ s!/!::!g;
-        push @found, [$name, $pkg];
-    }, $basepath);
+        push @found, [$file, $pkg];
+    }, $path) if -d $path;
 
     @found;
 }

@@ -1,5 +1,5 @@
 # $File: //depot/cpan/Module-Install/lib/Module/Install/Base.pm $ $Author: autrijus $
-# $Revision: #4 $ $Change: 1263 $ $DateTime: 2003/03/06 02:37:29 $ vim: expandtab shiftwidth=4
+# $Revision: #6 $ $Change: 1310 $ $DateTime: 2003/03/08 01:29:15 $ vim: expandtab shiftwidth=4
 
 package Module::Install::Base;
 
@@ -15,11 +15,6 @@ sub new {
     bless(\%args, $class);
 }
 
-sub initialized {
-    my $self = shift;
-    !($self->_top->admin) or $self->_top->admin->initialized;
-}
-
 sub AUTOLOAD {
     my $self = shift;
     goto &{$self->_top->autoload};
@@ -29,8 +24,7 @@ sub _top { $_[0]->{_top} }
 
 sub admin {
     my $self = shift;
-    return Module::Install::Base::FakeAdmin->new if $self->initialized;
-    $self->_top->admin;
+    $self->_top->{admin} or Module::Install::Base::FakeAdmin->new;
 }
 
 sub DESTROY {}

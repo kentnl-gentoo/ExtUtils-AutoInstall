@@ -1,5 +1,5 @@
 # $File: //depot/cpan/Module-Install/lib/Module/Install/Makefile.pm $ $Author: autrijus $
-# $Revision: #29 $ $Change: 1290 $ $DateTime: 2003/03/07 08:55:15 $ vim: expandtab shiftwidth=4
+# $Revision: #33 $ $Change: 1333 $ $DateTime: 2003/03/09 04:34:29 $ vim: expandtab shiftwidth=4
 
 package Module::Install::Makefile;
 use base 'Module::Install::Base';
@@ -21,7 +21,7 @@ sub prompt {
 sub makemaker_args {
     my $self = shift;
     my $args = ($self->{makemaker_args} ||= {});
-    $args = { %$args, @_ } if @_;
+    %$args = ( %$args, @_ ) if @_;
     $args;
 }
 
@@ -85,6 +85,7 @@ sub preamble {
 
 sub postamble {
     my ($self, $text) = @_;
+    my $class = join('::', @{$self->_top}{qw(name dispatch)});
 
     $self->{postamble} ||= << "END";
 realclean purge ::
@@ -92,8 +93,8 @@ realclean purge ::
 
 reset :: purge
 \t\$(RM_RF) inc
-\t\$(PERLRUN) -M"Module::Install::Admin" -e'&reset_manifest'
-\t\$(PERLRUN) -M"Module::Install::Admin" -e'&remove_meta'
+\t\$(PERL) -M$class -e \"reset_manifest()\"
+\t\$(PERL) -M$class -e \"remove_meta()\"
 
 upload :: test dist
 \tcpan-upload -verbose \$(DISTVNAME).tar\$(SUFFIX)

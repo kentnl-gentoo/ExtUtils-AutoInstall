@@ -1,3 +1,9 @@
+0.46:
+    - Oops, the do_once feature was failing massively.  Fixed.
+    - Now shipping with Module::Install 0.20, released candidate.
+    - An extra blank line is written to the end of postamble,
+      so other people can safely add more postambles.
+
 0.45:
     - Switched to the much more elegant Module::Install framework.
     - New 'do_once' pesudo-option to never attempt to install
