@@ -2,7 +2,7 @@
 # $Revision: #14 $ $Change: 10538 $ $DateTime: 2004/04/29 17:55:36 $ vim: expandtab shiftwidth=4
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.59';
+$ExtUtils::AutoInstall::VERSION = '0.60';
 
 use strict;
 use Cwd ();
@@ -14,8 +14,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.59 of B<ExtUtils::AutoInstall>,
-released April 30, 2004.
+This document describes version 0.60 of B<ExtUtils::AutoInstall>,
+released September 19, 2004.
 
 =head1 SYNOPSIS
 
@@ -580,7 +580,11 @@ sub _install_cpanplus {
     my $cp   = CPANPLUS::Backend->new;
     my $conf = $cp->configure_object;
 
-    return unless _can_write($conf->_get_build('base'));
+    return unless _can_write(
+        $conf->can('conf')
+            ? $conf->get_conf('base')       # 0.05x+
+            : $conf->_get_build('base')     # 0.04x
+    );
 
     # if we're root, set UNINST=1 to avoid trouble unless user asked for it.
     my $makeflags = $conf->get_conf('makeflags') || '';
@@ -689,7 +693,7 @@ sub _install_cpan {
                 $CPAN::META->instance(
                     'CPAN::Distribution',
                     $obj->cpan_file,
-                )->{install}
+                )->{install} if $CPAN::META
             };
 
             if ($rv eq 'YES') {
