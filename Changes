@@ -1,3 +1,8 @@
+0.47:
+    - Emergency release to combat PAUSE indexing this module
+      to under the PAR namespace.  Thanks for Randal Schwartz
+      for pointing it out.
+
 0.46:
     - Oops, the do_once feature was failing massively.  Fixed.
     - Now shipping with Module::Install 0.20, released candidate.

@@ -1,5 +1,5 @@
 # $File: //depot/cpan/Module-Install/lib/Module/Install/Metadata.pm $ $Author: autrijus $
-# $Revision: #14 $ $Change: 1315 $ $DateTime: 2003/03/08 02:43:21 $ vim: expandtab shiftwidth=4
+# $Revision: #15 $ $Change: 1344 $ $DateTime: 2003/03/10 00:10:02 $ vim: expandtab shiftwidth=4
 
 package Module::Install::Metadata;
 use base 'Module::Install::Base';
@@ -12,7 +12,7 @@ use vars qw($VERSION);
 sub Meta { shift }
 
 my @scalar_keys = qw(name version abstract author license distribution_type);
-my @tuple_keys  = qw(build_requires requires recommends);
+my @tuple_keys  = qw(build_requires requires recommends bundles);
 
 foreach my $key (@scalar_keys) {
     *$key = sub {

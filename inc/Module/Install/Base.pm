@@ -1,5 +1,5 @@
 # $File: //depot/cpan/Module-Install/lib/Module/Install/Base.pm $ $Author: autrijus $
-# $Revision: #6 $ $Change: 1310 $ $DateTime: 2003/03/08 01:29:15 $ vim: expandtab shiftwidth=4
+# $Revision: #7 $ $Change: 1361 $ $DateTime: 2003/03/11 02:13:18 $ vim: expandtab shiftwidth=4
 
 package Module::Install::Base;
 
@@ -37,3 +37,6 @@ sub AUTOLOAD {}
 sub DESTROY {}
 
 1;
+
+__END__
+

@@ -1,7 +1,7 @@
-# $File: //depot/cpan/Module-Install/lib/Module/Install/Run.pm $ $Author: autrijus $
-# $Revision: #4 $ $Change: 1317 $ $DateTime: 2003/03/08 06:25:04 $ vim: expandtab shiftwidth=4
+# $File: //depot/cpan/Module-Install/lib/Module/Install/Can.pm $ $Author: ingy $
+# $Revision: #3 $ $Change: 1364 $ $DateTime: 2003/03/11 22:44:50 $ vim: expandtab shiftwidth=4
 
-package Module::Install::Run;
+package Module::Install::Can;
 use base 'Module::Install::Base';
 
 $VERSION = '0.01';
@@ -13,6 +13,8 @@ sub can_run {
     require Config;
     require File::Spec;
     require ExtUtils::MakeMaker;
+
+    return $cmd if (-x $cmd or $cmd = MM->maybe_command($cmd));
 
     for my $dir ((split /$Config::Config{path_sep}/, $ENV{PATH}), '.') {
         my $abs = File::Spec->catfile($dir, $cmd);

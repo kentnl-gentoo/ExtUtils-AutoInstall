@@ -1,5 +1,5 @@
 # $File: //depot/cpan/Module-Install/lib/Module/Install.pm $ $Author: autrijus $
-# $Revision: #39 $ $Change: 1314 $ $DateTime: 2003/03/08 02:41:17 $ vim: expandtab shiftwidth=4
+# $Revision: #42 $ $Change: 1359 $ $DateTime: 2003/03/11 01:49:03 $ vim: expandtab shiftwidth=4
 
 package Module::Install;
 $VERSION = '0.20';
@@ -42,6 +42,7 @@ sub new {
 
     $args{dispatch} ||= 'Admin';
     $args{prefix}   ||= 'inc';
+    $args{bundle}   ||= '_bundle';
 
     $class =~ s/^\Q$args{prefix}\E:://;
     $args{name}     ||= $class;

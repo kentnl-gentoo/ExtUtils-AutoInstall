@@ -1,8 +1,20 @@
 # $File: //depot/cpan/Module-Install/lib/Module/Install/AutoInstall.pm $ $Author: autrijus $
-# $Revision: #8 $ $Change: 1328 $ $DateTime: 2003/03/08 13:42:14 $ vim: expandtab shiftwidth=4
+# $Revision: #9 $ $Change: 1341 $ $DateTime: 2003/03/09 23:28:03 $ vim: expandtab shiftwidth=4
 
 package Module::Install::AutoInstall;
 use base 'Module::Install::Base';
+
+sub AutoInstall { $_[0] }
+
+sub run {
+    my $self = shift;
+    $self->auto_install_now(@_);
+}
+
+sub write {
+    my $self = shift;
+    $self->auto_install(@_);
+}
 
 sub auto_install {
     my $self = shift;
@@ -26,8 +38,13 @@ do{eval{require CPANPLUS;CPANPLUS::install $p};eval("use $p $v;
     ExtUtils::AutoInstall->import(
         (@core ? (-core => \@core) : ()), @_, $self->features
     );
+
+    my $class = ref($self);
+    $self->postamble(
+        "# --- $class section:\n" .
+        ExtUtils::AutoInstall::postamble()
+    );
     $self->makemaker_args( ExtUtils::AutoInstall::_make_args() );
-    $self->postamble( ExtUtils::AutoInstall::postamble() );
 }
 
 sub auto_install_now {
