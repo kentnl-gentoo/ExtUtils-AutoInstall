@@ -1,0 +1,22 @@
+# $File: //member/autrijus/ExtUtils-AutoInstall/README $ $Author: autrijus $
+# $Revision: #2 $ $Change: 2108 $ $DateTime: 2001/10/17 02:56:56 $
+
+This is the README file for ExtUtils::AutoInstall, a module to
+let Makefile.PL automatically install dependencies via CPAN.
+
+* Installation
+
+ExtUtils::AutoInstall uses the standard perl module install process:
+
+perl Makefile.PL
+make
+make install
+
+* Copyright
+
+Copyright 2001 by Autrijus Tang <autrijus@autrijus.org>,
+
+All rights reserved.  You can redistribute and/or modify
+this bundle under the same terms as Perl itself.
+
+See <http://www.perl.com/perl/misc/Artistic.html>.
