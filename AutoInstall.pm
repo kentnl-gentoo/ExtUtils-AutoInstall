@@ -2,7 +2,7 @@
 # $Revision: #44 $ $Change: 4058 $ $DateTime: 2002/04/30 16:34:09 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.29';
+$ExtUtils::AutoInstall::VERSION = '0.30';
 
 use strict;
 
@@ -15,22 +15,24 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.29 of B<ExtUtils::AutoInstall>,
-released April 30, 2002.
+This document describes version 0.30 of B<ExtUtils::AutoInstall>,
+released May 16, 2002.
 
 =head1 SYNOPSIS
 
 In F<Makefile.PL>:
 
-    # ExtUtils::AutoInstall Bootstrap Code, version 3.
-    BEGIN{my$p='ExtUtils::AutoInstall';my$v=.29;eval"use $p $v;1"or
-    print"==> $p $v needed. Install it from CPAN? [Y/n] "and<STDIN>
-    !~/^n/i and print"*** Fetching $p.\n"and(eval{require CPANPLUS;
-    CPANPLUS::install$p}||eval{require CPAN,CPAN::install$p});eval"
-    use $p $v;1"or die"*** Please install $p $v manually first.\n"}
+    # ExtUtils::AutoInstall Bootstrap Code, version 4.
+    BEGIN{my$p='ExtUtils::AutoInstall';my$v=.30;eval"use $p $v;1"or
+    ($ENV{PERL_EXTUTILS_AUTOINSTALL}!~/--(?:default|skip|testonly)/
+    and(-t STDIN)or eval"use ExtUtils::MakeMaker;WriteMakefile('PR'
+    .'EREQ_PM'=>{'$p',$v});1"and exit)and print"==> $p $v needed. "
+    ."Install it from CPAN? [Y/n] "and<STDIN>!~/^n/i and print"***"
+    ." Fetching $p\n"and do{eval{require CPANPLUS;CPANPLUS::install
+    $p};eval"use $p $v;1"or eval{require CPAN;CPAN::install$p};eval
 
     use ExtUtils::AutoInstall (
-	-version	=> '0.29',	# required AutoInstall version
+	-version	=> '0.30',	# required AutoInstall version
 	-config		=> {
 	    make_args	=> '--hello'	# option(s) for CPAN::Config 
 	    force	=> 1,		# pseudo-option to force install
@@ -68,6 +70,7 @@ Invoking the resulting F<Makefile.PL>:
     % perl Makefile.PL --defaultdeps	# accept default value on prompts
     % perl Makefile.PL --checkdeps	# check only, no Makefile produced
     % perl Makefile.PL --skipdeps	# ignores all dependencies
+    % perl Makefile.PL --testonly	# don't write installation targets
 
 Note that the trailing 'deps' of arguments may be omitted, too.
 
@@ -186,7 +189,9 @@ my %FeatureMap = (
 
 # missing modules, existing modules, disabled tests
 my (@Missing, @Existing, %DisabledTests, $UnderCPAN, $HasCPANPLUS);
-my ($Config, $CheckOnly, $SkipInstall, $AcceptDefault); 
+my ($Config, $CheckOnly, $SkipInstall, $AcceptDefault, $TestOnly); 
+
+$AcceptDefault = 1 unless -t STDIN; # non-interactive session
 
 foreach my $arg (@ARGV, split(/[\s\t]+/, $ENV{PERL_EXTUTILS_AUTOINSTALL})) {
     if ($arg =~ /^--config=(.*)$/) {
@@ -207,6 +212,10 @@ foreach my $arg (@ARGV, split(/[\s\t]+/, $ENV{PERL_EXTUTILS_AUTOINSTALL})) {
     }
     elsif ($arg =~ /^--skip(?:deps)?$/) {
 	$SkipInstall = 1;
+	next;
+    }
+    elsif ($arg =~ /^--test(?:only)?$/) {
+	$TestOnly = 1;
 	next;
     }
 }
@@ -605,8 +614,8 @@ sub main::WriteMakefile {
 
     my %args = @_;
 
-    $args{PREREQ_PM} = { %{$args{PREREQ_PM} ||= {} }, @Existing, @Missing }
-	if $UnderCPAN;
+    $args{PREREQ_PM} = { %{$args{PREREQ_PM} || {} }, @Existing, @Missing }
+	if $UnderCPAN or $TestOnly;
 
     if ($args{EXE_FILES}) {
 	require ExtUtils::Manifest;
@@ -647,7 +656,7 @@ checkdeps ::
 installdeps ::
 	$action
 .
-    };
+    } unless $TestOnly;
 
     ExtUtils::MakeMaker::WriteMakefile(%args);
 
@@ -675,7 +684,10 @@ project.
 
 Eric Andreychek contributed to the C<-force> pseudo-option feature;
 Brian Ingerson suggested the non-intrusive handling of C<-core> and
-bootstrap installations, and let the user have total control. Thanks!
+bootstrap installations, and let the user have total control.
+
+Rocco Caputo made me write compatibility code for F<cpansmoke> and
+other non-tty STDIN type installations. Thanks!
 
 =head1 AUTHORS
 

@@ -1,4 +1,9 @@
 ____________________________________________________________________________
+[  4058] By: autrijus                              on 2002/05/16  23:34:09
+        Log: * This be AutoInstall 0.30.
+             * change the boostrap code to allow non-interactive installs.
+	   ! AutoInstall.pm
+____________________________________________________________________________
 [  4058] By: autrijus                              on 2002/04/30  16:34:09
         Log: * This be AutoInstall 0.29.
              * change the boostrap code to allow CPANPLUS.
