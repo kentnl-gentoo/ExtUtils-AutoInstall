@@ -1,3 +1,11 @@
+0.43:
+    - Jonathan Leffler implemented the postamble() function as a way to
+      work around problems when using ExtUtils::AutoInstall with modules
+      that require their own MY::postamble function.
+    - Whitespec cleanup, also courtesy of Jonathan Leffler.
+    - The ACKNOWLEDGEMENTS section has been tidied up in favor of a
+      separate AUTHORS file.
+
 0.42:
     - Added ->missing_modules that returns @Missing.
     - Added ->do_install that starts installation right after import.
@@ -13,28 +21,23 @@
     - Refactored the internals to avoid eval STRING as much as possible.
 
 0.32:
-
     - Fixed incompatibility with CPANPLUS's make procedure, as reported
       by Chia-Liang Kao.
 
 0.31:
-
     - Implemented -skiptests, as suggested by Matt Cashner.
     - Fixed cases in which we're require() not used.
     
 0.30: 
-
     - Changed the bootstrap code to allow non-interactive installs.
 
 0.29: 
-
     - Change the bootstrap code to allow CPANPLUS.
     - Fixed Sort::Versions's idea of 0.55 > 0.7.
     - Probing of installation success/failure for CPANPLUS was wrong.
     - Don't use modobj methods; unavailable before CPANPLUS 0.03.
 
 0.28:
-
     - Bundled with CPANPLUS 0.03.
     - Works on 5.00x now.
     - Fixed the connectivity checking problem.
@@ -47,7 +50,6 @@
     - Skip install if nothing is to be installed.
 
 0.26:
-
     - Bootstrap now prompts instead of silently grabs the module.
     - Similarly, -version update also confirms with user.
     - -core now double-checks with user instead of force install.

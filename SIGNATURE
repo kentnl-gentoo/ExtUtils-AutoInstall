@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.14.
+signed via the Module::Signature module, version 0.21.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,18 +14,19 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 0099098b121b7678eb3f95367c9ad14f47a68dca AutoInstall.pm
-SHA1 db3ffbb51d4725d43ff3eb214df1cdea9eefa105 Changes
-SHA1 60189ef8439a4c977a99c85d3d41169874e01204 MANIFEST
+SHA1 cae1319cc4e6d708da175a835ab4cfaf5e7b48b1 AUTHORS
+SHA1 97f3cd991a4c751fdfb7e9cb0e787757ce38f00a AutoInstall.pm
+SHA1 dd023ec25772e68446c20c8831cca4d378acec72 Changes
+SHA1 df097e36d296a3cd36ad0799460239157d2d1db8 MANIFEST
 SHA1 10e1ee4c932618acd7c2bff4f2bb89eac3904348 Makefile.PL
 SHA1 e7fdfbc56d030ecc1988ba67ab1361712cbc3a9b README
 SHA1 acea249afd053cd0f559e619d47a981fd496bc45 TODO
-SHA1 7e7ca2ba5a101e6c995907b50f4ac1c860c5b4fb t/0-signature.t
-SHA1 9428c7a3f445ce037872fed96596ded2ef481330 t/AutoInstall.t
+SHA1 a46a0b15aa815840808d3d3ba19b30e0753130d7 t/0-signature.t
+SHA1 34c8171bcf31904e463545d9be51a09d7adb3fc3 t/AutoInstall.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.0 (FreeBSD)
+Version: GnuPG v1.2.1 (FreeBSD)
 
-iD8DBQE9ryIutLPdNzw1AaARAl0iAJwLSnSIC/riiMbpf1Cthf43SX6QkwCcCcC/
-fxJjwxqCB2jMxRGQJmPNgjM=
-=vfoF
+iD8DBQE+ApbatLPdNzw1AaARAjgdAJ99U2OBCNUP8rj8xf38K7f8Rby2pACdFMuO
+qqwjS5h35d8vwpFtgNruokE=
+=8MHl
 -----END PGP SIGNATURE-----

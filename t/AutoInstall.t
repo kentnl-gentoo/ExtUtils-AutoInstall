@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/t/AutoInstall.t $ $Author: autrijus $
-# $Revision: #1 $ $Change: 1 $ $DateTime: 2002/06/11 15:35:12 $
+# $Revision: #2 $ $Change: 2800 $ $DateTime: 2002/12/20 03:40:26 $
 
 use strict;
 use Test;
 
-BEGIN { plan tests => 8; $^W = 0; };
+BEGIN { plan tests => 6; $^W = 0; };
 
 # Intercepts calls to WriteMakefile and prompt.
 my $mm_args;
@@ -64,6 +64,11 @@ WriteMakefile(
     DISTNAME		=> 'Joe-Hacker',
     EXE_FILES		=> [ qw/foo bar baz/ ],
 );
+
+# XXX - test currently disabled in anticipation of a
+#       rewrite using Test::MockObject.
+
+exit;
 
 $$out =~ s/.*\n//; # strip the version-dependent line.
 
