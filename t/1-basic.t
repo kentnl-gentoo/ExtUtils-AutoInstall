@@ -29,6 +29,11 @@ my $fh  = Symbol::gensym;
 my $out = tie *$fh, __PACKAGE__;
 select(*$fh);
 
+# test from a clean state
+$ENV{PERL_EXTUTILS_AUTOINSTALL} = '';
+require ExtUtils::AutoInstall;
+ExtUtils::AutoInstall::_accept_default(0);
+
 # calls the module.
 ok(eval <<'.', $@);
 use ExtUtils::AutoInstall (
