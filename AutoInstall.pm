@@ -1,10 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #33 $ $Change: 3716 $ $DateTime: 2002/04/06 02:17:43 $
+# $Revision: #37 $ $Change: 3818 $ $DateTime: 2002/04/09 08:41:44 $
 
 package ExtUtils::AutoInstall;
-require 5.005;
-
-$ExtUtils::AutoInstall::VERSION = '0.27';
+$ExtUtils::AutoInstall::VERSION = '0.28';
 
 use strict;
 
@@ -17,7 +15,7 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.27 of B<ExtUtils::AutoInstall>.
+This document describes version 0.28 of B<ExtUtils::AutoInstall>.
 
 =head1 SYNOPSIS
 
@@ -93,8 +91,8 @@ with the user, if the user chooses not to install the modules that
 belongs to it. This differs with the pre-0.26 'silent install'
 behaviour.
 
-Starting from version 0.27, if C<-core> is set to the string C<'all'>
-(case-insensitive), every features will be considered core.
+Starting from version 0.27, if C<-core> is set to the string C<all>
+(case-insensitive), every features will be considered mandatory.
 
 The dependencies are expressed as pairs of C<Module> => C<version>
 inside an a array reference. If the order does not matter, and there
@@ -105,18 +103,6 @@ Once B<ExtUtils::AutoInstall> has determined which module(s) are
 needed, it checks whether it's running under the B<CPAN> shell and
 should therefore let B<CPAN> handle the dependency.
 
-If it's not running under B<CPAN>, the installer will probe for
-an active connection by trying to resolve the domain C<cpan.org>,
-and check for the user's permission to use B<CPAN>. If all went
-well, a separate B<CPAN> instance is created to install the required
-modules.
-
-If you have the B<CPANPLUS> package installed in your system,
-it is preferred by default over B<CPAN>.
-
-All modules scheduled to install will be deleted from C<%INC> first,
-so B<ExtUtils::MakeMaker> will check the newly installed modules.
-
 Finally, the C<WriteMakefile()> is overridden to perform some
 additional checks, as well as skips tests associated with
 disabled features by the C<-tests> option.
@@ -124,6 +110,19 @@ disabled features by the C<-tests> option.
 The actual installation happens at the end of the C<make config>
 target; i.e. both C<make test> and C<make install> will trigger the
 installation of required modules.
+
+If it's not running under B<CPAN>, the installer will probe for
+an active connection by trying to resolve the domain C<cpan.org>,
+and check for the user's permission to use B<CPAN>. If all went
+well, a separate B<CPAN> instance is created to install the required
+modules.
+
+If you have the B<CPANPLUS> package installed in your system,
+it is preferred by default over B<CPAN>; it also accepts some extra
+options (e.g. C<target => 'skiptest' to skip testing).
+
+All modules scheduled to install will be deleted from C<%INC> first,
+so B<ExtUtils::MakeMaker> will check the newly installed modules.
 
 Additionally, you could use the C<make installdeps> target to install
 the modules, and the C<make checkdeps> target to check dependencies
@@ -134,10 +133,11 @@ command has an equivalent effect.
 
 B<ExtUtils::AutoInstall> will add C<UNINST=1> to your B<make install>
 flags if your effective uid is 0 (root), unless you explicitly disable
-it by setting B<CPAN>'s C<make_install_arg> configuration option to
-include C<UNINST=0>. This I<may> cause dependency problems if you are
-using a customized directory structure for your site. Please consult
-L<CPAN/FAQ> for an explanation in detail.
+it by setting B<CPAN>'s C<make_install_arg> configuration option (or
+the C<makeflags> option of B<CPANPLUS>) to include C<UNINST=0>. This
+I<may> cause dependency problems if you are using a fine-tuned directory
+structure for your site. Please consult L<CPAN/FAQ> for an explanation
+in detail.
 
 If B<Sort::Versions> is available, it will be used to compare the
 required version with the existing module's version and the CPAN
@@ -409,7 +409,11 @@ sub _install_cpanplus {
 
 	if ($obj and defined(_version_check($obj->{version}, $ver))) {
 	    my $pathname = $pkg; $pathname =~ s/::/\\W/;
-	    delete $INC{$_} foreach grep { m/$pathname.pm/i } keys(%INC);
+
+	    foreach my $inc (grep { m/$pathname.pm/i } keys(%INC)) {
+		delete $INC{$inc};
+	    }
+
 	    my $i; # used below to strip leading '-' from config keys
 	    
 	    if ($obj->install(@config)) {
@@ -461,7 +465,10 @@ sub _install_cpan {
 
 	if ($obj and defined(_version_check($obj->cpan_version, $ver))) {
 	    my $pathname = $pkg; $pathname =~ s/::/\\W/;
-	    delete $INC{$_} foreach grep { m/$pathname.pm/i } keys(%INC);
+
+	    foreach my $inc (grep { m/$pathname.pm/i } keys(%INC)) {
+		delete $INC{$inc};
+	    }
 
 	    $obj->force('install') if $force;
 
@@ -534,7 +541,7 @@ sub _connected_to {
     my $site = shift;
 
     return (
-	qq{use Socket; Socket::inet_aton('$site') } or _prompt(qq(
+	eval qq{use Socket; Socket::inet_aton('$site') } or _prompt(qq(
 *** Your host cannot resolve the domain name '$site', which
     probably means the Internet connections are unavailable.
 ==> Should we try to install the required module(s) anyway?), 'n'
@@ -658,15 +665,15 @@ L<CPANPLUS>
 
 The test script included in the B<ExtUtils::AutoInstall> distribution
 contains code adapted from Michael Schwern's B<Test::More> under the
-I<Artistic License>. Please refer to F<tests.pl> for details.
+I<Artistic License>. Please refer to F<t/AutoInstall.t> for details.
 
 Thanks also to Jesse Vincent for suggesting the semantics of various
-F<make> targets, and Jos Boumans for introducing me to his B<CPANPLUS>
+F<make> targets, and Jos IBoumans for introducing me to his B<CPANPLUS>
 project.
 
 Eric Andreychek contributed to the C<-force> pseudo-option feature;
 Brian Ingerson suggested the non-intrusive handling of C<-core> and
-bootstrap installations, and let the user has total control. Thanks!
+bootstrap installations, and let the user have total control. Thanks!
 
 =head1 AUTHORS
 

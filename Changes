@@ -1,4 +1,32 @@
 ____________________________________________________________________________
+[  3827] By: autrijus                              on 2002/04/09  11:26:50
+        Log: * This be ExtUtils::AutoInstall 0.28, the version that went
+	     out
+             with CPANPLUS 0.03.
+	   ! README
+____________________________________________________________________________
+[  3818] By: autrijus                              on 2002/04/09  08:41:44
+        Log: * more 5.00x friendness.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3817] By: autrijus                              on 2002/04/09  08:37:50
+        Log: * version bump.
+             * pod corrections.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3814] By: autrijus                              on 2002/04/09  08:19:42
+        Log: * version bump.
+             * try to make perl 5.004 happy.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3783] By: autrijus                              on 2002/04/08  19:12:49
+        Log: * oops! didn't really check for connectivity.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3776] By: autrijus                              on 2002/04/08  07:21:24
+        Log: * changes.
+	   ! Changes
+____________________________________________________________________________
 [  3775] By: autrijus                              on 2002/04/08  07:09:03
         Log: * This be ExtUtils::AutoInstall, 0.27.
 	   ! README TODO
