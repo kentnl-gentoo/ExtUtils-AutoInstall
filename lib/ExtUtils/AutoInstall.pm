@@ -1,8 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/lib/ExtUtils/AutoInstall.pm $ 
-# $Revision: #9 $ $Change: 9532 $ $DateTime: 2004/01/01 06:47:30 $ vim: expandtab shiftwidth=4
+# $Revision: #11 $ $Change: 10505 $ $DateTime: 2004/04/21 12:17:13 $ vim: expandtab shiftwidth=4
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.56';
+$ExtUtils::AutoInstall::VERSION = '0.57';
 
 use strict;
 use Cwd ();
@@ -14,8 +14,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.56 of B<ExtUtils::AutoInstall>,
-released January 1, 2004.
+This document describes version 0.57 of B<ExtUtils::AutoInstall>,
+released April 21, 2004.
 
 =head1 SYNOPSIS
 
@@ -652,7 +652,14 @@ sub _install_cpan {
 
             $obj->force('install') if $args{force};
 
-            if ($obj->install eq 'YES') {
+            my $rv = $obj->install || eval { 
+                $CPAN::META->instance(
+                    'CPAN::Distribution',
+                    $obj->cpan_file,
+                )->{install}
+            };
+
+            if ($rv eq 'YES') {
                 print "*** $pkg successfully installed.\n";
                 $success = 1;
             }

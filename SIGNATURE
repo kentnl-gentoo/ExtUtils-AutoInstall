@@ -15,28 +15,28 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 9588c7a43b34108e5e04c42aa99a2db7c5eb7717 AUTHORS
-SHA1 ff0a985a10e4492c798af7f3d9596b75c95c6b72 Changes
+SHA1 0fcaabd1831321b87b6c9db5f5fd011719f185ba Changes
 SHA1 d9490747d26b1689fe640e6c76844e31d3a23235 MANIFEST
-SHA1 9b44036d1fa1e3e47fc8606d2feecac93325d5fc META.yml
+SHA1 2674b6962dd7b07c01858d34617fe2950e44e42c META.yml
 SHA1 44daa44ad596d193c40d8a441e87dcd219385530 Makefile.PL
 SHA1 809047faa91d3504ebf708caf6a69a4d05235f9e README
 SHA1 4af539bc7000a591ec64b955caa32053e558b28c TODO
-SHA1 056a35f53855c73fb98ada291ca70f5ce8332b4c inc/Module/Install.pm
-SHA1 b431feb7056a1bc5fc36fefb7b71d7e3fc970d0b inc/Module/Install/AutoInstall.pm
-SHA1 afe7ca05acf9028246e70aa6cdbc4f238b12acdd inc/Module/Install/Base.pm
-SHA1 ba881ecfb8e8b9c4ebbc409b8025cac973511197 inc/Module/Install/Can.pm
-SHA1 c03e641fcc136de2fbdd62ce4e82e2dfa8410962 inc/Module/Install/Fetch.pm
-SHA1 4a93dcd87c242ca46f47517501d34c5cf352686a inc/Module/Install/Makefile.pm
-SHA1 2a0dd241db019def435fde8537e600a182750824 inc/Module/Install/Metadata.pm
-SHA1 1915204e46fcee6faf528f8d86aec215e332cc7b inc/Module/Install/Win32.pm
-SHA1 acf1fd355f805442c195dc9dc4e764ad742862e1 inc/Module/Install/WriteAll.pm
-SHA1 825a176fe339aece62e5a5ebeec222020018f930 lib/ExtUtils/AutoInstall.pm
+SHA1 5cedf06e6cbfee2d1ae080d5b3565f919e1d5e40 inc/Module/Install.pm
+SHA1 6ed9fe265a683511ca59c8fc8d7719eb892521ec inc/Module/Install/AutoInstall.pm
+SHA1 342463eab1ecaf4a4824afbbc34faccc364ca8c7 inc/Module/Install/Base.pm
+SHA1 49eb99cdf06faaf8627179eb611adf29fe86c72e inc/Module/Install/Can.pm
+SHA1 bcee63bdc6667b0827b5461a1e1ad779b207fc23 inc/Module/Install/Fetch.pm
+SHA1 5a0dd7ab5c4feb056e69ff722d101c55b41dd295 inc/Module/Install/Makefile.pm
+SHA1 0cfc03eb4b43b37c41c81005c3d7199a9abdb61e inc/Module/Install/Metadata.pm
+SHA1 52e2f858e52946610fdf3343d4f4ccaf719fe746 inc/Module/Install/Win32.pm
+SHA1 e1fd54f65facedd60f631ac34e81cf104e51b3d0 inc/Module/Install/WriteAll.pm
+SHA1 e7fb2049ea8428acbbb1088c36b26920a77cf358 lib/ExtUtils/AutoInstall.pm
 SHA1 3f3a0c37db62e198ae6d3be896e84fc79662d2df t/0-signature.t
 SHA1 e38c1c53c652de0b77eab55a8e946f4e1ce27f58 t/1-basic.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (FreeBSD)
+Version: GnuPG v1.2.1 (FreeBSD)
 
-iD8DBQE/88QitLPdNzw1AaARAsMsAJ0YaazBP0Jt2E1o0LVfkLqXWkljxQCgte0v
-0fNViSxfqSdgTDZIqGwZhtE=
-=Kz51
+iD8DBQFAhmi7tLPdNzw1AaARAmkZAJ4w7n8Ph1nR+4t2AzkEOJNv2+TyYQCgqDfI
+cHcPBPMoOI/tjsUhnKZj58c=
+=hZNv
 -----END PGP SIGNATURE-----
