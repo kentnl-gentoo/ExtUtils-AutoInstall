@@ -1,8 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #45 $ $Change: 5849 $ $DateTime: 2003/05/14 21:11:12 $
+# $Revision: #46 $ $Change: 5867 $ $DateTime: 2003/05/15 18:26:55 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.51';
+$ExtUtils::AutoInstall::VERSION = '0.52';
 
 use strict;
 
@@ -15,8 +15,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.51 of B<ExtUtils::AutoInstall>,
-released May 15, 2003.
+This document describes version 0.52 of B<ExtUtils::AutoInstall>,
+released May 16, 2003.
 
 =head1 SYNOPSIS
 
@@ -821,7 +821,7 @@ sub _make_args {
     ) if $Config;
 
     $PostambleActions = (
-	$missing ? "\$(PERLRUN) $0 --config=$config --installdeps=$missing"
+	$missing ? "\$(PERL) $0 --config=$config --installdeps=$missing"
 		 : "\@\$(NOOP)"
     );
 

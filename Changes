@@ -1,4 +1,12 @@
 ____________________________________________________________________________
+[  5867] By: autrijus                              on 2003/05/15  18:26:55
+        Log: * 0.52 -- use $(PERL) instead of $(PERLRUN) for 5.005 perl.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  5850] By: autrijus                              on 2003/05/14  21:16:23
+        Log: * changes and signatures.
+	   ! Changes META.yml SIGNATURE
+____________________________________________________________________________
 [  5849] By: autrijus                              on 2003/05/14  21:11:12
         Log: * 0.51, purely for M::I changes so it builds on 5.00503.
 	   ! AutoInstall.pm
