@@ -1,8 +1,8 @@
-# $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #46 $ $Change: 5867 $ $DateTime: 2003/05/15 18:26:55 $
+# $File: //member/autrijus/ExtUtils-AutoInstall/lib/ExtUtils/AutoInstall.pm $ 
+# $Revision: #2 $ $Change: 7913 $ $DateTime: 2003/09/06 14:41:10 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.52';
+$ExtUtils::AutoInstall::VERSION = '0.53';
 
 use strict;
 
@@ -15,8 +15,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.52 of B<ExtUtils::AutoInstall>,
-released May 16, 2003.
+This document describes version 0.53 of B<ExtUtils::AutoInstall>,
+released September 6, 2003.
 
 =head1 SYNOPSIS
 
@@ -488,7 +488,7 @@ sub install {
     my %args = @config;
     my %failed;
     local *FAILED;
-    if ($args{do_once} and open(FAILED, '.autoinstall.failed')) {
+    if ($args{do_once} and open(FAILED, '.#autoinstall.failed')) {
 	while (<FAILED>) { chomp; $failed{$_}++ }
 	close FAILED;
 

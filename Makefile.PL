@@ -1,14 +1,14 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/Makefile.PL $ $Author: autrijus $
-# $Revision: #8 $ $Change: 4887 $ $DateTime: 2003/03/23 00:10:11 $
+# $Revision: #10 $ $Change: 7914 $ $DateTime: 2003/09/06 14:42:30 $
 
 use inc::Module::Install;
-require './AutoInstall.pm';
+use lib 'lib';
 
-name		('ExtUtils::AutoInstall');
+name		('ExtUtils-AutoInstall');
 abstract	('Automatic install of dependencies via CPAN');
 author		('Autrijus Tang (autrijus@autrius.org)');
-version_from	('AutoInstall.pm');
+version_from	('lib/ExtUtils/AutoInstall.pm');
 
 requires	('Cwd');
 requires	('Carp');
@@ -18,7 +18,7 @@ requires	('ExtUtils::MakeMaker');
 features(
     'CPANPLUS Support' => [
 	-default	    => 0,
-	'CPANPLUS'	    => '0.032',
+	'CPANPLUS'	    => '0.043',
     ],
     'CPAN.pm support' => [
 	-default	    => 0,

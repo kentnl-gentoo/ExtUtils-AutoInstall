@@ -1,11 +1,24 @@
 ____________________________________________________________________________
+[  7913] By: autrijus                              on 2003/09/06  14:41:10
+        Log: * This be 0.53.
+             * upgrade to less noisy tests.
+	   ! MANIFEST META.yml Makefile.PL
+	   ! lib/ExtUtils/AutoInstall.pm t/0-signature.t
+	   ! t/1-basic.t
+____________________________________________________________________________
+[  7911] By: autrijus                              on 2003/09/06  14:31:22
+        Log: * move files into modern locations.
+	  +> lib/ExtUtils/AutoInstall.pm t/1-basic.t
+	   - AutoInstall.pm t/AutoInstall.t
+____________________________________________________________________________
+[  7870] By: autrijus                              on 2003/09/04  17:31:58
+        Log: * change the flag file from ".autoinstall.failed" to
+             ".#autoinstall.failed" so it won't be packed into MANIFEST.
+	   ! AutoInstall.pm
+____________________________________________________________________________
 [  5867] By: autrijus                              on 2003/05/15  18:26:55
         Log: * 0.52 -- use $(PERL) instead of $(PERLRUN) for 5.005 perl.
 	   ! AutoInstall.pm
-____________________________________________________________________________
-[  5850] By: autrijus                              on 2003/05/14  21:16:23
-        Log: * changes and signatures.
-	   ! Changes META.yml SIGNATURE
 ____________________________________________________________________________
 [  5849] By: autrijus                              on 2003/05/14  21:11:12
         Log: * 0.51, purely for M::I changes so it builds on 5.00503.
@@ -14,14 +27,6 @@ ____________________________________________________________________________
 [  5439] By: autrijus                              on 2003/04/22  09:54:35
         Log: * cpan::config was loaded too late. thanks for david.
 	   ! AUTHORS AutoInstall.pm
-____________________________________________________________________________
-[  4936] By: autrijus                              on 2003/03/25  16:54:39
-        Log: * changes and signatures.
-	   ! Changes SIGNATURE
-____________________________________________________________________________
-[  4935] By: autrijus                              on 2003/03/25  16:53:40
-        Log: * changes and signatures.
-	   ! Changes META.yml SIGNATURE
 ____________________________________________________________________________
 [  4934] By: autrijus                              on 2003/03/25  16:52:18
         Log: * This be 0.50.
@@ -36,10 +41,6 @@ ____________________________________________________________________________
         Log: * we'll ship META.yml next time around, i promise!
 	   + META.yml
 	   ! MANIFEST Makefile.PL
-____________________________________________________________________________
-[  4886] By: autrijus                              on 2003/03/22  23:50:51
-        Log: * changes and signatures.
-	   ! Changes SIGNATURE
 ____________________________________________________________________________
 [  4885] By: autrijus                              on 2003/03/22  23:48:18
         Log: * This be .49, the 'sudo' edition.
@@ -71,25 +72,13 @@ ____________________________________________________________________________
         Log: * trying to work around dmake bug.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  4783] By: autrijus                              on 2003/03/18  19:52:45
-        Log: * changes and signatures.
-	   ! Changes SIGNATURE
-____________________________________________________________________________
 [  4782] By: autrijus                              on 2003/03/18  19:50:31
         Log: * Jonathan Leffler pointed out that the SIGNATURE is wrong.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  4727] By: autrijus                              on 2003/03/14  10:07:17
-        Log: * changes and signatures.
-	   ! Changes SIGNATURE
-____________________________________________________________________________
 [  4726] By: autrijus                              on 2003/03/14  10:07:08
         Log: * This be 0.47, emergency release.
 	   ! AutoInstall.pm MANIFEST
-____________________________________________________________________________
-[  4672] By: autrijus                              on 2003/03/09  12:51:48
-        Log: * changes and signatures.
-	   ! Changes SIGNATURE
 ____________________________________________________________________________
 [  4671] By: autrijus                              on 2003/03/09  12:46:30
         Log: * toward 0.46.
@@ -98,10 +87,6 @@ ____________________________________________________________________________
 [  4658] By: autrijus                              on 2003/03/08  19:34:10
         Log: * oops. fixed the do_once obiwan bug reported by kane.
 	   ! AutoInstall.pm
-____________________________________________________________________________
-[  4637] By: autrijus                              on 2003/03/07  17:25:44
-        Log: * changes and signatures.
-	   ! Changes SIGNATURE
 ____________________________________________________________________________
 [  4636] By: autrijus                              on 2003/03/07  17:25:35
         Log: * this really be 0.45.
@@ -151,10 +136,6 @@ ____________________________________________________________________________
 [  2987] By: autrijus                              on 2002/12/29  19:04:52
         Log: * beginning of -conflict support.
 	   ! AutoInstall.pm
-____________________________________________________________________________
-[  2917] By: autrijus                              on 2002/12/25  11:20:42
-        Log: * changes and signatures.
-	   ! Changes SIGNATURE
 ____________________________________________________________________________
 [  2916] By: autrijus                              on 2002/12/25  11:20:00
         Log: * Thie be 0.44.
@@ -215,10 +196,6 @@ ____________________________________________________________________________
 	   + AUTHORS
 	   ! AutoInstall.pm MANIFEST
 ____________________________________________________________________________
-[  1503] By: autrijus                              on 2002/10/17  20:22:29
-        Log: * changes and signatures.
-	   ! Changes SIGNATURE
-____________________________________________________________________________
 [  1502] By: autrijus                              on 2002/10/17  20:21:45
         Log: * 0.42.
 	   ! AutoInstall.pm
@@ -233,10 +210,6 @@ ____________________________________________________________________________
              * mad Changelog proofreading.
 	   ! AutoInstall.pm Changes MANIFEST Makefile.PL
 	   ! README TODO
-____________________________________________________________________________
-[  1324] By: autrijus                              on 2002/10/11  09:45:41
-        Log: * changes and signature.
-	   ! Changes SIGNATURE
 ____________________________________________________________________________
 [  1323] By: autrijus                              on 2002/10/11  09:40:48
         Log: * This be 0.04.
@@ -255,11 +228,6 @@ ____________________________________________________________________________
 [   955] By: autrijus                              on 2002/09/20  15:07:47
         Log: * minor fix.
 	   ! AutoInstall.pm
-____________________________________________________________________________
-[   945] By: autrijus                              on 2002/09/20  02:50:57
-        Log: * changes and signature.
-	   + SIGNATURE
-	   ! Changes
 ____________________________________________________________________________
 [   944] By: autrijus                              on 2002/09/20  02:39:32
         Log: * addes Module::Signature signatures.
