@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/t/AutoInstall.t $ $Author: autrijus $
-# $Revision: #3 $ $Change: 2599 $ $DateTime: 2001/12/13 23:26:30 $
+# $Revision: #4 $ $Change: 2602 $ $DateTime: 2001/12/14 07:42:01 $
 
 use strict;
 use Test;
@@ -80,8 +80,10 @@ ok($$out, qr/\Q*** Checking for dependencies...
 *** ExtUtils::AutoInstall configuration finished.\E/s);
 
 use vars qw/@Data_Stack $DNE/;
+$mm_args->{test}{TESTS} = ''; # XXX: workaround false-positive globbing
 
-ok(_deep_check($mm_args, {
+ok(_deep_check($mm_args, 
+{
     'ABSTRACT', 'Perl Interface to Joe Hacker', 'test', { 'TESTS' => '' },
     'NAME', 'Joe::Hacker', 'DISTNAME', 'Joe-Hacker', 'AUTHOR',
     'Joe Hacker (joe@hacker.org)', 'EXE_FILES', [], 'VERSION_FROM',

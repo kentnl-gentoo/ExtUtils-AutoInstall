@@ -1,4 +1,46 @@
 ____________________________________________________________________________
+[  2741] By: autrijus                              on 2001/12/29  04:53:34
+        Log: * This be EU::AI 0.25.
+             * implements --skipdeps, which skips -core and all dep checkings.
+             * POD update.
+	   ! AutoInstall.pm README
+____________________________________________________________________________
+[  2683] By: autrijus                              on 2001/12/20  03:06:43
+        Log: * documents the recent additions.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  2663] By: autrijus                              on 2001/12/18  05:49:07
+        Log: * makes the targets always available.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  2640] By: autrijus                              on 2001/12/17  14:47:34
+        Log: * implements --installdeps and --checkdeps couresy of obra.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  2626] By: autrijus                              on 2001/12/16  11:48:13
+        Log: * suggestion from obra: --checkdeps and checkdeps/installdeps targets.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  2602] By: autrijus                              on 2001/12/14  07:42:01
+        Log: * updates autoinstall to use cpanplus by default.
+             * remedy the test to accomodate for wrong globs.
+	   ! AutoInstall.pm t/AutoInstall.t
+____________________________________________________________________________
+[  2600] By: autrijus                              on 2001/12/13  23:27:20
+        Log: * changes.
+	   ! Changes
+____________________________________________________________________________
+[  2599] By: autrijus                              on 2001/12/13  23:26:30
+        Log: * this be 0.24 of EU::AI.
+             * corrects test's recognition of t/AutoInstall.t.
+             * shuns warnings.
+	   ! t/AutoInstall.t
+____________________________________________________________________________
+[  2598] By: autrijus                              on 2001/12/13  23:21:33
+        Log: * delay autoinstall to the 'make config' time to make brev happy.
+             * reflected this in the test.
+	   ! AutoInstall.pm t/AutoInstall.t
+____________________________________________________________________________
 [  2251] By: autrijus                              on 2001/11/02  10:17:05
         Log: * oops. the AutoInstall.pm failes to ackledge hash args.
              * reflect the changes in test.pl.
