@@ -2,12 +2,12 @@
 # $Revision: #44 $ $Change: 4058 $ $DateTime: 2002/04/30 16:34:09 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.30';
+$ExtUtils::AutoInstall::VERSION = '0.32';
 
 use strict;
 
 use Cwd;
-use ExtUtils::MakeMaker;
+use ExtUtils::MakeMaker ();
 
 =head1 NAME
 
@@ -15,8 +15,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.30 of B<ExtUtils::AutoInstall>,
-released May 16, 2002.
+This document describes version 0.32 of B<ExtUtils::AutoInstall>,
+released May 20, 2002.
 
 =head1 SYNOPSIS
 
@@ -46,8 +46,10 @@ In F<Makefile.PL>:
 	    Package1	=> '0.01',
 	],
 	'Feature2'	=> [
-	    # associate tests to be disabled along with this
+	    # associate tests to be disabled if this feature is missing
 	    -tests	=> [ <t/feature2*.t> ],
+	    # associate tests to be disabled if this feature is present
+	    -skiptests	=> [ <t/nofeature2*.t> ],
 	    Package2	=> '0.02',
 	],
 	'Feature3'	=> {		# hash reference works, too
@@ -101,8 +103,8 @@ Starting from version 0.27, if C<-core> is set to the string C<all>
 
 The dependencies are expressed as pairs of C<Module> => C<version>
 inside an a array reference. If the order does not matter, and there
-are no C<-default> or C<-tests> directives for that feature, you
-may also use a hash reference.
+are no C<-default>, C<-tests> or C<-skiptests> directives for that
+feature, you may also use a hash reference.
 
 Once B<ExtUtils::AutoInstall> has determined which module(s) are
 needed, it checks whether it's running under the B<CPAN> shell and
@@ -252,7 +254,7 @@ sub import {
 	grep { /^[^\-]/ or /^-core$/i } keys %{+{@args}})[0]);
 
     while (my ($feature, $modules) = splice(@args, 0, 2)) {
-	my (@required, @tests);
+	my (@required, @tests, @skiptests);
 	my $default = 1;
 
 	if ($feature =~ m/^-(\w+)$/) {
@@ -282,8 +284,9 @@ sub import {
 	    if ($mod =~ m/^-(\w+)$/) {
 		my $option = lc($1);
 
-		$default = $arg  if ($option eq 'default');
-		@tests = @{$arg} if ($option eq 'tests');
+		$default   = $arg    if ($option eq 'default');
+		@tests     = @{$arg} if ($option eq 'tests');
+		@skiptests = @{$arg} if ($option eq 'skiptests');
 
 		next;
 	    }
@@ -293,6 +296,7 @@ sub import {
 	    if (defined(my $cur = _version_check(_load($mod), $arg ||= 0))) {
 		print "loaded. ($cur".($arg ? " >= $arg" : '').")\n";
 		push @Existing, $mod => $arg;
+		$DisabledTests{$_} = 1 for map { glob($_) } @skiptests;
 	    }
 	    else {
 		print "failed! (need".($arg ? "s $arg" : 'ed').")\n";
@@ -310,16 +314,18 @@ sub import {
 	    qq{ module(s)?}, $default ? 'y' : 'n',
 	) =~ /^[Yy]/)) {
 	    push (@Missing, @required);
+	    $DisabledTests{$_} = 1 for map { glob($_) } @skiptests;
 	}
 
 	elsif (!$SkipInstall and $mandatory and _prompt(
 	    qq{==> The module(s) are mandatory! Really skip?}, 'n',
 	) =~ /^[Nn]/) {
 	    push (@Missing, @required);
+	    $DisabledTests{$_} = 1 for map { glob($_) } @skiptests;
 	}
 
 	else {
-	    @DisabledTests{map { glob($_) } @tests} = 1;
+	    $DisabledTests{$_} = 1 for map { glob($_) } @tests;
 	}
     }
 
@@ -330,6 +336,10 @@ sub import {
     print "*** $class configuration finished.\n";
 
     chdir $cwd;
+
+    # import to main::
+    no strict 'refs'; 
+    *{'main::WriteMakefile'} = \&Write;
 }
 
 # CPAN.pm is non-reentrant, so check if we're under it and have no CPANPLUS
@@ -600,7 +610,7 @@ sub _version_check {
 sub main::PREREQ_PM { return {}; }
 
 # a wrapper to ExtUtils::MakeMaker::WriteMakefile
-sub main::WriteMakefile {
+sub Write {
     require Carp;
     Carp::croak "WriteMakefile: Need even number of args" if @_ % 2;
 
@@ -687,7 +697,11 @@ Brian Ingerson suggested the non-intrusive handling of C<-core> and
 bootstrap installations, and let the user have total control.
 
 Rocco Caputo made me write compatibility code for F<cpansmoke> and
-other non-tty STDIN type installations. Thanks!
+other non-tty STDIN type installations.  Matt Cashner suggested the
+C<-skiptest> semantic and caught a subtle bug involving C<require>
+instead of C<use> of AutoInstall.  Chia-Liang Kao spotted the
+incompatibility between the use of C<$0> and CPANPLUS's C<eval()>
+munging.  Thanks!
 
 =head1 AUTHORS
 

@@ -1,5 +1,19 @@
+0.32:
+
+    - Fixed incompatibility with CPANPLUS's make procedure,
+      as reported by Chia-Liang Kao.
+
+0.31:
+
+    - Implemented -skiptests, as suggested by Matt Cashner.
+    - Fixed cases in which we're require() not used.
+    
 ____________________________________________________________________________
-[  4058] By: autrijus                              on 2002/05/16  23:34:09
+[  4060] By: autrijus                              on 2002/05/16  23:34:09
+        Log: * -skiptests (reverse of -tests), requested by phosphor
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  4059] By: autrijus                              on 2002/05/16  23:34:09
         Log: * This be AutoInstall 0.30.
              * change the boostrap code to allow non-interactive installs.
 	   ! AutoInstall.pm
