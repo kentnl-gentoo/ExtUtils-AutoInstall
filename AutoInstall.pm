@@ -1,10 +1,10 @@
-# $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ $Author: autrijus $
-# $Revision: #1 $ $Change: 2104 $ $DateTime: 2001/10/17 02:49:40 $
+# $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
+# $Revision: #5 $ $Change: 2119 $ $DateTime: 2001/10/17 07:16:17 $
 
 package ExtUtils::AutoInstall;
 require 5.005;
 
-$ExtUtils::AutoInstall::VERSION = '0.2';
+$ExtUtils::AutoInstall::VERSION = '0.21';
 
 use strict;
 
@@ -26,16 +26,17 @@ in F<Makefile.PL>:
 
     use ExtUtils::MakeMaker;
     use ExtUtils::AutoInstall (
-	-core => [
+	-version	=> '0.21', # required ExtUtils::AutoInstall version
+	-core		=> [
 	    # core modules
 	    Package1	=> '0.01',
 	],
-	'Feature1', [
+	'Feature1'	=> [
 	    # do we want to install this feature by default?
 	    -default	=>  (system('feature1 --version') == 0 ),
 	    Package2	=> '0.02',
 	],
-	'Feature2', [
+	'Feature2'	=> [
 	    # associate tests to be disabled along with this
 	    -tests	=> [ <t/feature2*.t> ],
 	    Package3	=> '0.03',
@@ -64,7 +65,7 @@ The B<Core Features> marked by the name C<-core> is an exeption:
 all missing packages that belongs to it will be installed without
 prompting the user.
 
-Once B<ExtUtils::AutoInstall> knows which modules are needed,
+Once B<ExtUtils::AutoInstall> knows which module(s) are needed,
 it checks whether it's running under the B<CPAN> shell and should
 let B<CPAN> handle the dependency.
 
@@ -81,7 +82,7 @@ Finally, the C<WriteMakefile()> is overrided to perform some
 additional checks, as well as skips tests associated with
 disabled features by the C<-tests> option.
 
-=head1 CAVEATS
+=head1 NOTES
 
 Since this module is needed before writing F<Makefile>, it makes
 little use as a CPAN module; hence each distribution must include
@@ -89,7 +90,7 @@ it in full. The only alternative I'm aware of, namely prompting
 in F<Makefile.PL> to force user install it (cf. the B<Template>
 Toolkit's dependency on B<AppConfig>) is not very desirable either.
 
-Of course, it's possible to add this line before every script:
+The current compromise is to add this line before every script:
 
     BEGIN { eval q{ require ExtUtils::AutoInstall; 1 } or eval q{
 	    warn "*** This module needs ExtUtils::AutoInstall...\n";
@@ -97,12 +98,20 @@ Of course, it's possible to add this line before every script:
 
 But that ain't pretty.
 
-If you have any solutions, please let me know. Thanks.
+Since we do not want all future options of B<ExtUtils::AutoInstall>
+to be painfully detected manually like the above, this module
+provides a I<bootstrapping> mechanism via the C<-version> flag. If
+it sees a newer version is needed by a certain Makefile.PL, it
+will go ahead to fetch a new version, reload it into memory, and
+pass the arguments forward.
+
+If you have any recommendations, please let me know. Thanks.
 
 =cut
 
 # special map on pre-defined feature sets
 my %FeatureMap = (
+    ''	    => 'Core Features', # deprecated
     '-core' => 'Core Features',
 );
 
@@ -110,19 +119,26 @@ my %FeatureMap = (
 my (@Missing, @Existing, %DisabledTests); 
 
 sub import {
-    my ($class, $pkg) = (shift, caller(0));
-    return unless @_; # nothing to do
+    my $class = shift;
+    my @args  = @_ or return;
 
     print "*** $class version ".$class->VERSION."\n";
     print "*** Checking for dependencies...\n";
 
     my $cwd = Cwd::cwd();
 
-    while (my ($feature, $modules) = splice(@_, 0, 2)) {
+    while (my ($feature, $modules) = splice(@args, 0, 2)) {
 	my (@required, @tests);
 	my $default = 1;
 
-	print "[".($FeatureMap{$feature} || $feature)."]\n";
+	# check for a newer version of myself
+	(_update_to($modules, @_) ? return : next)
+	    if (lc($feature) eq '-version');
+
+	print "[".($FeatureMap{lc($feature)} || $feature)."]\n";
+
+	unshift @$modules, -default => &{shift(@$modules)}
+	    if (ref($modules->[0]) eq 'CODE'); # XXX: bugward compat
 
 	while (my ($mod, $arg) = splice(@$modules, 0, 2)) {
 	    if ($mod =~ m/^-(\w+)$/) {
@@ -136,7 +152,7 @@ sub import {
 
 	    printf("- %-16s ...", $mod);
 
-	    if (my $cur = _version_check($mod, $arg)) {
+	    if (my $cur = _version_check(_load($mod), $arg)) {
 		print "loaded. ($cur >= $arg)\n";
 		push @Existing, $mod => $arg;
 	    }
@@ -175,18 +191,7 @@ sub import {
     of the dependency's installation later.
 .
 	}
-	elsif (_connected_to('cpan.org') and
-	       _can_write(MM->catfile($CPAN::Config->{cpan_home}, 'sources'))
-	) {
-	    foreach my $package (@Missing) {
-		my $pathname = $package; $pathname =~ s/::/\\W/;
-		delete $INC{$_} foreach grep { m/$pathname.pm/i } keys(%INC);
-
-		my $obj = CPAN::Shell->expand(Module => $package);
-		$obj->install if $obj;
-	    }
-	}
-	else {
+	elsif (!_install(@Missing)) {
 	    print << '.';
 
 *** Okay, skipped auto-installation. However, you should still
@@ -203,6 +208,59 @@ sub import {
     chdir $cwd;
 
     print "*** $class finished.\n";
+}
+
+sub _install {
+    my $installed = 0;
+
+    return unless _connected_to('cpan.org') and _can_write(
+	MM->catfile($CPAN::Config->{cpan_home}, 'sources')
+    );
+
+    while (my ($pkg, $ver) = splice(@_, 0, 2)) {
+	my $pathname = $pkg; $pathname =~ s/::/\\W/;
+	delete $INC{$_} foreach grep { m/$pathname.pm/i } keys(%INC);
+
+	my $obj = CPAN::Shell->expand(Module => $pkg);
+
+	if ($obj and _version_check($obj->cpan_version, $ver)) {
+	    $obj->install;
+	    $installed++;
+	}
+	else {
+	    warn << ".";
+
+*** Could not find a version $ver or above for $pkg; skipping.
+.
+	}
+    }
+
+    return $installed;
+}
+
+
+sub _update_to {
+    my $class = __PACKAGE__;
+    my $ver   = shift;
+
+    return if _version_check(_load($class), $ver); # no need to upgrade
+
+    print << ".";
+
+*** A newer version of $class ($ver) is required.
+    Trying to fetch it from CPAN...
+.
+
+    # install ourselves
+    require CPAN; CPAN::Config->load;
+
+    eval qq{ use $class; 1 } and return $class->import(@_)
+	if _install($class, $ver);
+
+    print << '.'; exit 1;
+
+*** Cannot bootstrap myself. :-( Installation terminated.
+.
 }
 
 sub _connected_to {
@@ -237,10 +295,9 @@ sub _load {
 }
 
 sub _version_check {
-    my ($mod, $min) = @_;
-    my $cur = _load($mod);
+    my ($cur, $min) = @_;
 
-    if ($Sort::Versions::VERSION || _load('Sort::Versions')) {
+    if ($Sort::Versions::VERSION or _load('Sort::Versions')) {
 	# use Sort::Versions as the sorting algorithm 
 	return ((Sort::Versions::versioncmp($cur, $min) != -1) ? $cur : 0);
     }
@@ -249,6 +306,9 @@ sub _version_check {
 	return ($cur >= $min ? $cur : 0);
     }
 }
+
+# nothing; this usage is deprecated.
+sub main::PREREQ_PM { return {}; }
 
 sub main::WriteMakefile {
     require Carp;

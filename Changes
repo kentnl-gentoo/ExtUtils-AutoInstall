@@ -1,63 +1,63 @@
 ____________________________________________________________________________
+[  2119] By: autrijus@autribsd                     on 2001/10/17 07:16:17
+	Log: * This be ExtUtils::AutoInstall v0.21, compatibility release.
+	     * (v0.2 used to break against OurNet::BBS v1.62.)
+____________________________________________________________________________
+[  2118] By: autrijus@autribsd                     on 2001/10/17 07:13:43
+	Log: * bugward combatibility.
+____________________________________________________________________________
+[  2117] By: autrijus@autribsd                     on 2001/10/17 07:05:17
+	Log: * gets the two modules in sync.
+____________________________________________________________________________
+[  2115] By: autrijus@autribsd                     on 2001/10/17 06:31:33
+	Log: * self-bootstrapping code, a really funky feature.
+____________________________________________________________________________
+[  2108] By: autrijus@autricvic                    on 2001/10/17 02:56:56
+	Log: * oops.
+____________________________________________________________________________
+[  2107] By: autrijus@autricvic                    on 2001/10/17 02:55:21
+	Log: * changes.
+____________________________________________________________________________
+[  2104] By: autrijus@autribsd                     on 2001/10/17 02:49:40
+	Log: * a separate distro: AutoInstall.
+____________________________________________________________________________
 [  2106] By: autrijus@autricvic                    on 2001/10/17 02:54:46
 	Log: * This be ExtUtils::AutoInstall v0.02.
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2100] By: autrijus@autribsd                     on 2001/10/17 02:28:28
 	Log: * checks permissions into CPAN's sources/ directory first.
 	     * better diagnostics.
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2099] By: autrijus@autricvic                    on 2001/10/17 02:07:47
 	Log: * pod and version bump.
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2098] By: autrijus@autricvic                    on 2001/10/17 02:02:15
 	Log: * oops, s/zpan/cpan/.
 	     * for features that didn't specify -default, assume yes.
 	     * makes it perl 5.005 happy.
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2097] By: autrijus@autricvic                    on 2001/10/17 01:45:19
 	Log: * AutoInstall now detects connection status.
 	     * it also probes for prerequisites policy too.
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2090] By: autrijus@autribsd                     on 2001/10/16 06:42:02
 	Log: * revised ExtUtils::AutoInstall to have better interface
 	     * adjusted everythign accordingly.
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2089] By: autrijus@autricvic                    on 2001/10/16 05:46:51
 	Log: * s/Pre/Existing/ failed me.
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2088] By: autrijus@autribsd                     on 2001/10/16 05:33:05
 	Log: * marks the -dev release by the CPAN way.
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2076] By: autrijus@autrixor                     on 2001/10/15 11:46:53
 	Log: * delete old package from %INC so MakeMaker will be happy
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2063] By: autrijus@autrixor                     on 2001/10/15 06:58:18
 	Log: * uses Sort::Versions to compare versions where available.
-       Path: .
-	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2061] By: autrijus@autrixor                     on 2001/10/15 06:43:00
 	Log: * ExtUtil::AutoInstall, a new module handling customized
 	     install.
 	     * modified Makefile.PL to take advantage of it.
 	     * bbscomd now uses Term::ReadKey only when needed.
-       Path: .
-	   + AutoInstall.pm
