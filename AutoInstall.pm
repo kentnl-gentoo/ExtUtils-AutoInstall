@@ -1,10 +1,10 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #5 $ $Change: 2119 $ $DateTime: 2001/10/17 07:16:17 $
+# $Revision: #14 $ $Change: 2158 $ $DateTime: 2001/10/19 09:42:52 $
 
 package ExtUtils::AutoInstall;
 require 5.005;
 
-$ExtUtils::AutoInstall::VERSION = '0.21';
+$ExtUtils::AutoInstall::VERSION = '0.22';
 
 use strict;
 
@@ -19,28 +19,32 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 in F<Makefile.PL>:
 
-    # till we think of a better solution...
-    BEGIN { eval q{ require ExtUtils::AutoInstall; 1 } or eval q{
-	    warn "*** This module needs ExtUtils::AutoInstall...\n";
-	    use CPAN; CPAN::install('ExtUtils::AutoInstall') }; }
+    # ExtUtils::AutoInstall Bootstrap Code, version 1.
+    BEGIN { my $p='ExtUtils::AutoInstall'; eval"use $p 0.21;1" or(print
+	    "*** Fetching $p.\n"), require CPAN, CPAN::install $p; eval
+	    "use $p 0.21;1" or die "*** Please install $p manually.\n"}
 
-    use ExtUtils::MakeMaker;
     use ExtUtils::AutoInstall (
-	-version	=> '0.21', # required ExtUtils::AutoInstall version
-	-core		=> [
-	    # core modules
-	    Package1	=> '0.01',
+	-version	=> '0.21',	# ExtUtils::AutoInstall version
+	-config		=> {
+	    make_args	=> '--hello'	# option(s) for CPAN::Config 
+	},
+	-core		=> [		# core modules
+	    Package0	=> '',		# any version would do
 	],
 	'Feature1'	=> [
 	    # do we want to install this feature by default?
-	    -default	=>  (system('feature1 --version') == 0 ),
-	    Package2	=> '0.02',
+	    -default	=> ( system('feature1 --version') == 0 ),
+	    Package1	=> '0.01',
 	],
 	'Feature2'	=> [
 	    # associate tests to be disabled along with this
 	    -tests	=> [ <t/feature2*.t> ],
-	    Package3	=> '0.03',
+	    Package2	=> '0.02',
 	],
+	'Feature3'	=> {		# hash reference works, too
+	    Package3	=> '0.03',
+	}
     );
 
     WriteMakefile(
@@ -58,12 +62,18 @@ sophisticated form of dependency information than the C<PREREQ_PM>
 option offered by B<ExtUtils::MakeMaker>.
 
 Prerequisites are grouped into B<features>, and the user could
-specify yes/no on each one. The module writer may also supply
-a boolean value via C<-default> to specify the default choice.
+specify yes/no on each one's dependencies; the module writer may
+also supply a boolean value via C<-default> to specify the default
+choice.
 
-The B<Core Features> marked by the name C<-core> is an exeption:
+The B<Core Features> marked by the name C<-core> is an exception:
 all missing packages that belongs to it will be installed without
 prompting the user.
+
+The dependencies are expressed as pairs of C<Module> => C<version>
+inside an a array reference. You could also use hash reference if
+the order does not matter, and there are no C<-default> or C<-tests>
+directives for that feature.
 
 Once B<ExtUtils::AutoInstall> knows which module(s) are needed,
 it checks whether it's running under the B<CPAN> shell and should
@@ -78,9 +88,20 @@ modules.
 All modules scheduled to install will be deleted from C<%INC> first,
 so B<ExtUtils::MakeMaker> will check the newly installed modules.
 
-Finally, the C<WriteMakefile()> is overrided to perform some
+Finally, the C<WriteMakefile()> is overridden to perform some
 additional checks, as well as skips tests associated with
 disabled features by the C<-tests> option.
+
+=head1 CAVEATS
+
+As of v0.22, B<ExtUtils::AutoInstall> will add C<UNINST=1>
+to your B<make install> flag if your effective uid is 0 (root),
+unless you explicitly disable it by setting B<CPAN>'s
+C<make_install_arg> configuration option to include C<UNINST=0>.
+
+This I<might> cause dependency problems if you are using a
+customized directory structure for your site. Please consult
+L<CPAN/FAQ> for a explanation in detail.
 
 =head1 NOTES
 
@@ -90,20 +111,20 @@ it in full. The only alternative I'm aware of, namely prompting
 in F<Makefile.PL> to force user install it (cf. the B<Template>
 Toolkit's dependency on B<AppConfig>) is not very desirable either.
 
-The current compromise is to add this line before every script:
+The current compromise is to add this check before every script:
 
-    BEGIN { eval q{ require ExtUtils::AutoInstall; 1 } or eval q{
-	    warn "*** This module needs ExtUtils::AutoInstall...\n";
-	    use CPAN; CPAN::install('ExtUtils::AutoInstall') }; }
+    # ExtUtils::AutoInstall Bootstrap Code, version 1.
+    BEGIN { my $p='ExtUtils::AutoInstall'; eval"use $p 0.21;1" or(print
+	    "*** Fetching $p.\n"), require CPAN, CPAN::install $p; eval
+	    "use $p 0.21;1" or die "*** Please install $p manually.\n"}
 
 But that ain't pretty.
 
 Since we do not want all future options of B<ExtUtils::AutoInstall>
-to be painfully detected manually like the above, this module
-provides a I<bootstrapping> mechanism via the C<-version> flag. If
-it sees a newer version is needed by a certain Makefile.PL, it
-will go ahead to fetch a new version, reload it into memory, and
-pass the arguments forward.
+to be painfully detected manually like above, this module provides
+a I<bootstrapping> mechanism via the C<-version> flag. If a newer
+version is needed by the F<Makefile.PL>, it will go ahead to fetch
+a new version, reload it into memory, and pass the arguments forward.
 
 If you have any recommendations, please let me know. Thanks.
 
@@ -111,12 +132,14 @@ If you have any recommendations, please let me know. Thanks.
 
 # special map on pre-defined feature sets
 my %FeatureMap = (
-    ''	    => 'Core Features', # deprecated
+    ''	    => 'Core Features', # XXX: deprecated
     '-core' => 'Core Features',
 );
 
 # missing modules, existing modules, disabled tests
 my (@Missing, @Existing, %DisabledTests); 
+
+sub _prompt { goto &ExtUtils::MakeMaker::prompt; }
 
 sub import {
     my $class = shift;
@@ -125,20 +148,30 @@ sub import {
     print "*** $class version ".$class->VERSION."\n";
     print "*** Checking for dependencies...\n";
 
-    my $cwd = Cwd::cwd();
+    my $cwd	= Cwd::cwd();
+    my $config  = [];
 
     while (my ($feature, $modules) = splice(@args, 0, 2)) {
 	my (@required, @tests);
 	my $default = 1;
 
-	# check for a newer version of myself
-	(_update_to($modules, @_) ? return : next)
-	    if (lc($feature) eq '-version');
+	if ($feature =~ m/^-(\w+)$/) {
+	    my $option = lc($1);
+
+	    # check for a newer version of myself
+	    _update_to($modules, @_) and return	if $option eq 'version';
+	    # sets CPAN configuration options
+	    $config = $modules			if $option eq 'config';
+
+	    next;
+	}
 
 	print "[".($FeatureMap{lc($feature)} || $feature)."]\n";
 
+	$modules = [ %{$modules} ] if UNIVERSAL::isa($modules, 'HASH');
+
 	unshift @$modules, -default => &{shift(@$modules)}
-	    if (ref($modules->[0]) eq 'CODE'); # XXX: bugward compat
+	    if (ref($modules->[0]) eq 'CODE'); # XXX: bugward combatability
 
 	while (my ($mod, $arg) = splice(@$modules, 0, 2)) {
 	    if ($mod =~ m/^-(\w+)$/) {
@@ -152,19 +185,19 @@ sub import {
 
 	    printf("- %-16s ...", $mod);
 
-	    if (my $cur = _version_check(_load($mod), $arg)) {
-		print "loaded. ($cur >= $arg)\n";
+	    if (my $cur = _version_check(_load($mod), $arg ||= 0)) {
+		print "loaded. ($cur".($arg ? " >= $arg" : '').")\n";
 		push @Existing, $mod => $arg;
 	    }
 	    else {
-		print "failed! (needs $arg)\n";
+		print "failed! (need".($arg ? "s $arg" : 'ed').")\n";
 		push @required, $mod => $arg;
 	    }
 	}
 
 	next unless @required;
 
-	if (($feature eq '-core') or ExtUtils::MakeMaker::prompt(
+	if (($feature eq '-core') or _prompt(
 	    qq{==> Do you wish to install the }. (@required / 2).
 	    qq{ optional module(s)?}, $default ? 'y' : 'n',
 	) =~ /^[Yy]/) {
@@ -191,7 +224,7 @@ sub import {
     of the dependency's installation later.
 .
 	}
-	elsif (!_install(@Missing)) {
+	elsif (!_install($config, @Missing)) {
 	    print << '.';
 
 *** Okay, skipped auto-installation. However, you should still
@@ -211,11 +244,26 @@ sub import {
 }
 
 sub _install {
-    my $installed = 0;
+    my @config = UNIVERSAL::isa($_[0], 'HASH') ? %{+shift} : @{+shift};
 
     return unless _connected_to('cpan.org') and _can_write(
 	MM->catfile($CPAN::Config->{cpan_home}, 'sources')
     );
+
+    # if we're root, set UNINST=1 to avoid trouble unless user asks for it.
+    $CPAN::Config->{make_install_arg} .= ' UNINST=1' if index(
+	$CPAN::Config->{make_install_arg} ||= '', 'UNINST'
+    ) == -1 and eval qq{ $> eq '0' };
+
+    # don't show start-up info
+    $CPAN::Config->{inhibit_startup_message} = 1;
+
+    # set additional options
+    my ($opt, $arg);
+    local $CPAN::Config->{$opt} = $arg
+	while (($opt, $arg) = splice(@config, 0, 2));
+
+    my $installed = 0;
 
     while (my ($pkg, $ver) = splice(@_, 0, 2)) {
 	my $pathname = $pkg; $pathname =~ s/::/\\W/;
@@ -228,7 +276,7 @@ sub _install {
 	    $installed++;
 	}
 	else {
-	    warn << ".";
+	    print << ".";
 
 *** Could not find a version $ver or above for $pkg; skipping.
 .
@@ -255,7 +303,7 @@ sub _update_to {
     require CPAN; CPAN::Config->load;
 
     eval qq{ use $class; 1 } and return $class->import(@_)
-	if _install($class, $ver);
+	if _install([], $class, $ver);
 
     print << '.'; exit 1;
 
@@ -267,24 +315,23 @@ sub _connected_to {
     my $site = shift;
 
     return (
-	qq{use Socket; Socket::inet_aton('$site') } or
-	ExtUtils::MakeMaker::prompt(qq(
+	qq{use Socket; Socket::inet_aton('$site') } or _prompt(qq(
 *** Your host cannot resolve the domain name '$site', which
-    probably means the internet connections are unavailable.
-==> Should we try to install the required modules anyway?), 'n'
+    probably means the Internet connections are unavailable.
+==> Should we try to install the required module(s) anyway?), 'n'
 	) =~ /^[Yy]/
     );
 }
 
 sub _can_write {
     my $path = shift;
-    mkdir $path unless -e $path;
+    mkdir ($path, 0777) unless -e $path;
 
     return (
-	-w $path or ExtUtils::MakeMaker::prompt(qq(
+	-w $path or _prompt(qq(
 *** You are not allowed to write to the directory '$path';
     the installation may fail due to insufficient permissions.
-==> Should we try to install the required modules anyway?), 'n'
+==> Should we try to install the required module(s) anyway?), 'n'
 	) =~ /^[Yy]/
     );
 }
@@ -303,6 +350,7 @@ sub _version_check {
     }
     else {
 	# plain comparison
+	local $^W = 0; # shuts off 'not numeric' bugs
 	return ($cur >= $min ? $cur : 0);
     }
 }
@@ -341,6 +389,13 @@ __END__
 =head1 SEE ALSO
 
 L<perlmodlib>, L<CPAN>, L<ExtUtils::MakeMaker>
+
+=head1 ACKNOWLEDGEMENTS
+
+The test script included in the B<ExtUtils::AutoInstall>
+distribution contains code adapted from Michael Schwern's
+B<Test::More>, under the Artistic License. Please refer to
+F<tests.pl> for details.
 
 =head1 AUTHORS
 

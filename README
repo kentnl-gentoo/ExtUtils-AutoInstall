@@ -1,8 +1,17 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/README $ $Author: autrijus $
-# $Revision: #2 $ $Change: 2108 $ $DateTime: 2001/10/17 02:56:56 $
+# $Revision: #3 $ $Change: 2155 $ $DateTime: 2001/10/19 09:04:36 $
 
 This is the README file for ExtUtils::AutoInstall, a module to
 let Makefile.PL automatically install dependencies via CPAN.
+
+Most notable features include:
+
+- Letting the user enable/disable optional dependencies.
+- Support sane defaults by probing for the machine's capability.
+- If not inside a cpan shell, use CPAN.pm to install dependencies.
+- Enable/disable the associated tests automatically.
+- Supply UNINST=1 when it is safe and needed.
+- Checks MANIFEST to avoid unneccessary grepping of EXE_FILES.
 
 * Installation
 

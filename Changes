@@ -1,4 +1,50 @@
 ____________________________________________________________________________
+[  2158] By: autrijus@autribsd                     on 2001/10/19 09:42:52
+	Log: * oops. upgrade bootstrap code.
+____________________________________________________________________________
+[  2155] By: autrijus@autribsd                     on 2001/10/19 09:04:36
+	Log: * This be ExtUtils::AutoInstall 0.23.
+	     * more robust bootstrap code sample.
+	     * put brief introductory text into README.
+	     * some random TODOs.
+____________________________________________________________________________
+[  2154] By: autrijus@autribsd                     on 2001/10/19 08:47:48
+	Log: * version number crept in test. bad.
+____________________________________________________________________________
+[  2153] By: autrijus@autribsd                     on 2001/10/19 08:44:50
+	Log: * do away with Test::More; too much hassle.
+	     * mentioned schwern's license.
+____________________________________________________________________________
+[  2151] By: autrijus@autribsd                     on 2001/10/19 06:24:00
+	Log: * uses _prompt to improve clarity.
+	     * needs Test::More 0.31+ to test things now.
+	     * revised test to ensure the promised interface on POD works.
+____________________________________________________________________________
+[  2145] By: autrijus@autribsd                     on 2001/10/18 17:17:08
+	Log: * everything goes to STDOUT now.
+	     * skips unknown directives. (XXX: maybe should warn)
+	     * fix non-numeric comparison.
+____________________________________________________________________________
+[  2144] By: autrijus@autribsd                     on 2001/10/18 17:05:40
+	Log: * a better check routine suitable to both adults and children.
+____________________________________________________________________________
+[  2133] By: autrijus@autribsd                     on 2001/10/18 07:39:51
+	Log: * de-bump.
+____________________________________________________________________________
+[  2132] By: autrijus@autribsd                     on 2001/10/18 07:39:28
+	Log: * inhibits CPAN startup message.
+	     * new feature: -config could now be used to specify
+	     CPAN::Config options.
+	     * arrayref which orders are insignificant could be passed as
+	     hashrefs too.
+____________________________________________________________________________
+[  2130] By: autrijus@autribsd                     on 2001/10/18 07:00:41
+	Log: * solves the UNINST=0 problem manually.
+	     * makes 5.005_03 happy with us.
+____________________________________________________________________________
+[  2120] By: autrijus@autribsd                     on 2001/10/17 07:18:54
+	Log: * changes.
+____________________________________________________________________________
 [  2119] By: autrijus@autribsd                     on 2001/10/17 07:16:17
 	Log: * This be ExtUtils::AutoInstall v0.21, compatibility release.
 	     * (v0.2 used to break against OurNet::BBS v1.62.)
@@ -20,44 +66,3 @@ ____________________________________________________________________________
 ____________________________________________________________________________
 [  2104] By: autrijus@autribsd                     on 2001/10/17 02:49:40
 	Log: * a separate distro: AutoInstall.
-____________________________________________________________________________
-[  2106] By: autrijus@autricvic                    on 2001/10/17 02:54:46
-	Log: * This be ExtUtils::AutoInstall v0.02.
-____________________________________________________________________________
-[  2100] By: autrijus@autribsd                     on 2001/10/17 02:28:28
-	Log: * checks permissions into CPAN's sources/ directory first.
-	     * better diagnostics.
-____________________________________________________________________________
-[  2099] By: autrijus@autricvic                    on 2001/10/17 02:07:47
-	Log: * pod and version bump.
-____________________________________________________________________________
-[  2098] By: autrijus@autricvic                    on 2001/10/17 02:02:15
-	Log: * oops, s/zpan/cpan/.
-	     * for features that didn't specify -default, assume yes.
-	     * makes it perl 5.005 happy.
-____________________________________________________________________________
-[  2097] By: autrijus@autricvic                    on 2001/10/17 01:45:19
-	Log: * AutoInstall now detects connection status.
-	     * it also probes for prerequisites policy too.
-____________________________________________________________________________
-[  2090] By: autrijus@autribsd                     on 2001/10/16 06:42:02
-	Log: * revised ExtUtils::AutoInstall to have better interface
-	     * adjusted everythign accordingly.
-____________________________________________________________________________
-[  2089] By: autrijus@autricvic                    on 2001/10/16 05:46:51
-	Log: * s/Pre/Existing/ failed me.
-____________________________________________________________________________
-[  2088] By: autrijus@autribsd                     on 2001/10/16 05:33:05
-	Log: * marks the -dev release by the CPAN way.
-____________________________________________________________________________
-[  2076] By: autrijus@autrixor                     on 2001/10/15 11:46:53
-	Log: * delete old package from %INC so MakeMaker will be happy
-____________________________________________________________________________
-[  2063] By: autrijus@autrixor                     on 2001/10/15 06:58:18
-	Log: * uses Sort::Versions to compare versions where available.
-____________________________________________________________________________
-[  2061] By: autrijus@autrixor                     on 2001/10/15 06:43:00
-	Log: * ExtUtil::AutoInstall, a new module handling customized
-	     install.
-	     * modified Makefile.PL to take advantage of it.
-	     * bbscomd now uses Term::ReadKey only when needed.
