@@ -1,18 +1,66 @@
 ____________________________________________________________________________
+[  3775] By: autrijus                              on 2002/04/08  07:09:03
+        Log: * This be ExtUtils::AutoInstall, 0.27.
+	   ! README TODO
+____________________________________________________________________________
+[  3716] By: autrijus                              on 2002/04/06  02:17:43
+        Log: * -core now takes 'all', which makes all features mandatory.
+             * much better integration with CPANPLUS, including make
+	     options.
+             * _can_write now creates dir with chmod 0755 instead of 0777.
+             * some more comments.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3507] By: autrijus                              on 2002/03/21  20:25:04
+        Log: * tidying up the tesst case, from kane.
+	   ! t/AutoInstall.t
+____________________________________________________________________________
+[  3409] By: autrijus                              on 2002/03/12  16:16:43
+        Log: * mfc from cpanplus.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3404] By: autrijus                              on 2002/03/12  04:17:33
+        Log: * mfc from cpanplus.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3064] By: autrijus                              on 2002/02/07  11:25:07
+        Log: * recognizes the old MY::postamble if present.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  2834] By: autrijus                              on 2002/01/10  19:35:27
+        Log: * skip install if nothing is to be installed.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  2833] By: autrijus                              on 2002/01/10  19:33:36
+        Log: * removes spurious installations.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  2822] By: autrijus                              on 2002/01/09  18:54:08
+        Log: * updates test.
+	   ! t/AutoInstall.t
+____________________________________________________________________________
+[  2819] By: autrijus                              on 2002/01/09  18:45:21
+        Log: * changes.
+	   ! Changes
+____________________________________________________________________________
 [  2818] By: autrijus                              on 2002/01/09  18:44:27
         Log: * This be 0.26 of ExtUtils::AutoInstall.
              * Implemented Ingy's suggestions:
-             * 1) bootstrap now prompts instead of silently grabs the module.
+             * 1) bootstrap now prompts instead of silently grabs the
+	     module.
              * 2) similarily, -version update also confirms with user.
-             * 3) -core now double-checks with user instead of force install.
-             * 4) introduced PERL_EXTUTILS_AUTOINSTALL environment variable.
+             * 3) -core now double-checks with user instead of force
+	     install.
+             * 4) introduced PERL_EXTUTILS_AUTOINSTALL environment
+	     variable.
              * added --defaultdeps makefile.pl argument to accept default.
              * the 'deps' part of arguments are now optional.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2748] By: autrijus                              on 2001/12/30  03:27:51
         Log: * uses itself to install itself.
-             * idea from Eric Andreychek: implement the 'force' pseudo-option.
+             * idea from Eric Andreychek: implement the 'force'
+	     pseudo-option.
 	   ! AutoInstall.pm Makefile.PL README
 ____________________________________________________________________________
 [  2742] By: autrijus                              on 2001/12/29  05:03:22
@@ -21,7 +69,8 @@ ____________________________________________________________________________
 ____________________________________________________________________________
 [  2741] By: autrijus                              on 2001/12/29  04:53:34
         Log: * This be EU::AI 0.25.
-             * implements --skipdeps, which skips -core and all dep checkings.
+             * implements --skipdeps, which skips -core and all dep
+	     checkings.
              * POD update.
 	   ! AutoInstall.pm README
 ____________________________________________________________________________
@@ -38,7 +87,8 @@ ____________________________________________________________________________
 	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2626] By: autrijus                              on 2001/12/16  11:48:13
-        Log: * suggestion from obra: --checkdeps and checkdeps/installdeps targets.
+        Log: * suggestion from obra: --checkdeps and checkdeps/installdeps
+	     targets.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2602] By: autrijus                              on 2001/12/14  07:42:01
@@ -57,7 +107,8 @@ ____________________________________________________________________________
 	   ! t/AutoInstall.t
 ____________________________________________________________________________
 [  2598] By: autrijus                              on 2001/12/13  23:21:33
-        Log: * delay autoinstall to the 'make config' time to make brev happy.
+        Log: * delay autoinstall to the 'make config' time to make brev
+	     happy.
              * reflected this in the test.
 	   ! AutoInstall.pm t/AutoInstall.t
 ____________________________________________________________________________
@@ -119,8 +170,10 @@ ____________________________________________________________________________
 ____________________________________________________________________________
 [  2132] By: autrijus                              on 2001/10/17  16:39:28
         Log: * inhibits CPAN startup message.
-             * new feature: -config could now be used to specify CPAN::Config options.
-             * arrayref which orders are insignificant could be passed as hashrefs too.
+             * new feature: -config could now be used to specify
+	     CPAN::Config options.
+             * arrayref which orders are insignificant could be passed as
+	     hashrefs too.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
 [  2130] By: autrijus                              on 2001/10/17  16:00:41

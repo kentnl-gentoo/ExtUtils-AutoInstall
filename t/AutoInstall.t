@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/t/AutoInstall.t $ $Author: autrijus $
-# $Revision: #5 $ $Change: 2822 $ $DateTime: 2002/01/09 18:54:08 $
+# $Revision: #6 $ $Change: 3507 $ $DateTime: 2002/03/21 20:25:04 $
 
 use strict;
 use Test;
@@ -32,11 +32,11 @@ select(*$fh);
 # calls the module.
 ok(eval <<'.', $@);
 use ExtUtils::AutoInstall (
-    -version	=> '0.21',		# ExtUtils::AutoInstall version
-    -config		=> {
+    -version	=> '0.21',	# ExtUtils::AutoInstall version
+    -config	=> {
 	make_args	=> '--hello'	# option(s) for CPAN::Config 
     },
-    -core		=> [		# core modules
+    -core	=> [		# core modules
 	Package0	=> '',		# any version would do
     ],
     'Feature1'	=> [
@@ -46,10 +46,10 @@ use ExtUtils::AutoInstall (
     ],
     'Feature2'	=> [
 	# associate tests to be disabled along with this
-	-tests	=> [ <t/AutoInstall.t> ],
+	-tests		=> [ $0 ],
 	Package2	=> '0.02',
     ],
-    'Feature3'	=> {		# hash reference works, too
+    'Feature3'	=> {			# hash reference works, too
 	Package3	=> '0.03',
     },
 ); '';
@@ -57,12 +57,12 @@ use ExtUtils::AutoInstall (
 
 # simulates a makefile.
 WriteMakefile(
-    AUTHOR          => 'Joe Hacker (joe@hacker.org)',
-    ABSTRACT        => 'Perl Interface to Joe Hacker',
-    NAME            => 'Joe::Hacker',
-    VERSION_FROM    => 'Hacker.pm',
-    DISTNAME        => 'Joe-Hacker',
-    EXE_FILES       => [ qw/foo bar baz/ ],
+    AUTHOR		=> 'Joe Hacker (joe@hacker.org)',
+    ABSTRACT		=> 'Perl Interface to Joe Hacker',
+    NAME		=> 'Joe::Hacker',
+    VERSION_FROM	=> 'Hacker.pm',
+    DISTNAME		=> 'Joe-Hacker',
+    EXE_FILES		=> [ qw/foo bar baz/ ],
 );
 
 $$out =~ s/.*\n//; # strip the version-dependent line.
@@ -84,10 +84,13 @@ $mm_args->{test}{TESTS} = ''; # XXX: workaround false-positive globbing
 
 ok(_deep_check($mm_args, 
 {
-    'ABSTRACT', 'Perl Interface to Joe Hacker', 'test', { 'TESTS' => '' },
-    'NAME', 'Joe::Hacker', 'DISTNAME', 'Joe-Hacker', 'AUTHOR',
-    'Joe Hacker (joe@hacker.org)', 'EXE_FILES', [], 'VERSION_FROM',
-    'Hacker.pm',
+    ABSTRACT		=> 'Perl Interface to Joe Hacker',
+    test		=>  { 'TESTS' => '' },
+    NAME		=> 'Joe::Hacker',
+    DISTNAME		=> 'Joe-Hacker',
+    AUTHOR		=> 'Joe Hacker (joe@hacker.org)',
+    EXE_FILES		=> [],
+    VERSION_FROM	=> 'Hacker.pm',
 }));
 
 #######################################################################
@@ -104,7 +107,7 @@ ok(_deep_check($mm_args,
 #   Joshua Pritikin's Test module and lots of discussion with Barrie
 #   Slaymaker and the perl-qa gang.
 #
-# The source code of Test::More may be aquired at http://www.cpan.org/,
+# The source code of Test::More may be acquired at http://www.cpan.org/,
 # or from a standard perl distribution of v5.7.2+.
 #
 #######################################################################

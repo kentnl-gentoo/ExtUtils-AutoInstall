@@ -1,7 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/TODO $ $Author: autrijus $
-# $Revision: #1 $ $Change: 2155 $ $DateTime: 2001/10/19 09:04:36 $
+# $Revision: #2 $ $Change: 3775 $ $DateTime: 2002/04/08 07:09:03 $
 
 - Request for a specific version instead of the latest.
 - A cleaner self-boostrap block.
 - Default autoconf-like test utilities.
+- More CPANPLUS-specific features.
 

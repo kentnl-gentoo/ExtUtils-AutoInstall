@@ -1,10 +1,10 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #27 $ $Change: 2818 $ $DateTime: 2002/01/09 18:44:27 $
+# $Revision: #33 $ $Change: 3716 $ $DateTime: 2002/04/06 02:17:43 $
 
 package ExtUtils::AutoInstall;
 require 5.005;
 
-$ExtUtils::AutoInstall::VERSION = '0.26';
+$ExtUtils::AutoInstall::VERSION = '0.27';
 
 use strict;
 
@@ -17,8 +17,7 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.26 of B<ExtUtils::AutoInstall>,
-released January 10, 2002.
+This document describes version 0.27 of B<ExtUtils::AutoInstall>.
 
 =head1 SYNOPSIS
 
@@ -36,7 +35,7 @@ In F<Makefile.PL>:
 	    make_args	=> '--hello'	# option(s) for CPAN::Config 
 	    force	=> 1,		# pseudo-option to force install
 	},
-	-core		=> [		# core modules
+	-core		=> [		# core modules; may also be 'all'
 	    Package0	=> '',		# any version would do
 	],
 	'Feature1'	=> [
@@ -93,6 +92,9 @@ The B<Core Features> marked by the name C<-core> will double-check
 with the user, if the user chooses not to install the modules that
 belongs to it. This differs with the pre-0.26 'silent install'
 behaviour.
+
+Starting from version 0.27, if C<-core> is set to the string C<'all'>
+(case-insensitive), every features will be considered core.
 
 The dependencies are expressed as pairs of C<Module> => C<version>
 inside an a array reference. If the order does not matter, and there
@@ -207,6 +209,7 @@ foreach my $arg (@ARGV, split(/[\s\t]+/, $ENV{PERL_EXTUTILS_AUTOINSTALL})) {
     }
 }
 
+# overrides MakeMaker's prompt() to automatically accept the default choice
 sub _prompt {
     goto &ExtUtils::MakeMaker::prompt unless $AcceptDefault;
 
@@ -218,9 +221,11 @@ sub _prompt {
     return $default;
 }
 
+# the workhorse
 sub import {
     my $class = shift;
     my @args  = @_ or return;
+    my $core_all;
 
     print "*** $class version ".$class->VERSION."\n";
     print "*** Checking for dependencies...\n";
@@ -230,7 +235,8 @@ sub import {
     $Config  = [];
 
     my $maxlen = length((sort { length($b) <=> length($a) }
-	grep { /^[^\-]/ } map { keys %{ref($_) eq 'HASH' ? $_ : +{@{$_}}} }
+	grep { /^[^\-]/ }
+        map { ref($_) ? keys %{ref($_) eq 'HASH' ? $_ : +{@{$_}}} : '' }
 	map { +{@args}->{$_} }
 	grep { /^[^\-]/ or /^-core$/i } keys %{+{@args}})[0]);
 
@@ -243,8 +249,13 @@ sub import {
 
 	    # check for a newer version of myself
 	    _update_to($modules, @_) and return	if $option eq 'version';
+
 	    # sets CPAN configuration options
 	    $Config = $modules			if $option eq 'config';
+
+	    # promote every features to core status
+	    $core_all = ($modules =~ /^all$/i) and next
+		if $option eq 'core';
 
 	    next unless $option eq 'core';
 	}
@@ -280,119 +291,85 @@ sub import {
 
 	next unless @required;
 
+	my $mandatory = (($feature eq '-core' or $core_all) and $default);
+
 	if (!$SkipInstall and ($CheckOnly or _prompt(
 	    qq{==> Do you wish to install the }. (@required / 2).
-	    ($feature eq '-core' ? ' core' : ' optional').
+	    ($mandatory ? ' mandatory' : ' optional').
 	    qq{ module(s)?}, $default ? 'y' : 'n',
 	) =~ /^[Yy]/)) {
 	    push (@Missing, @required);
 	}
+
+	elsif (!$SkipInstall and $mandatory and _prompt(
+	    qq{==> The module(s) are mandatory! Really skip?}, 'n',
+	) =~ /^[Nn]/) {
+	    push (@Missing, @required);
+	}
+
 	else {
-	    if (!$SkipInstall and ($feature eq '-core') and _prompt(
-		qq{==> The module(s) are mandatory! Really skip?}, 'n',
-	    ) =~ /^[Nn]/) {
-		push (@Missing, @required);
-	    }
-	    else {
-		@DisabledTests{map { glob($_) } @tests} = 1;
-	    }
+	    @DisabledTests{map { glob($_) } @tests} = 1;
 	}
     }
 
-    if (@Missing) {
-	my $lock;
+    _check_lock(); # check for $UnderCPAN
 
-	unless (_has_cpanplus()) {
-	    require CPAN; CPAN::Config->load;
-	    $lock = MM->catfile($CPAN::Config->{cpan_home}, ".lock");
-	}
+    print "*** Dependencies will be installed the next time you type 'make'.\n"
+	if (@Missing and not ($CheckOnly or $UnderCPAN));
+    print "*** $class configuration finished.\n";
 
+    chdir $cwd;
+}
 
-	if (-f $lock and open(LOCK, $lock)
-	    and ($^O eq 'MSWin32' ? _under_cpan() : <LOCK> == getppid())
-	    and ($CPAN::Config->{prerequisites_policy} || '') ne 'ignore'
-	) {
-	    print << '.';
+# CPAN.pm is non-reentrant, so check if we're under it and have no CPANPLUS
+sub _check_lock {
+    return unless @Missing;
+    return if _has_cpanplus();
+
+    require CPAN; CPAN::Config->load;
+    my $lock = MM->catfile($CPAN::Config->{cpan_home}, ".lock");
+
+    if (-f $lock and open(LOCK, $lock)
+	and ($^O eq 'MSWin32' ? _under_cpan() : <LOCK> == getppid())
+	and ($CPAN::Config->{prerequisites_policy} || '') ne 'ignore'
+    ) {
+	print << '.';
 
 *** Since we're running under CPAN, I'll just let it take care
     of the dependency's installation later.
 .
-	    $UnderCPAN = 1;
-	}
-	elsif (!$CheckOnly) {
-	    print << '.';
-*** Dependencies will be installed the next time you type 'make'.
-.
-	}
-
-	close LOCK;
+	$UnderCPAN = 1;
     }
 
-    chdir $cwd;
-
-    print "*** $class configuration finished.\n";
+    close LOCK;
 }
 
 sub install {
     my $class  = shift;
-    my @config = @{+shift};
-    my $force;
+
+    my $i; # used below to strip leading '-' from config keys
+    my @config = (map { s/^-// if ++$i; $_ } @{+shift});
+
+    my @modules;
+    my $installed = 0;
+    while (my ($pkg, $ver) = splice(@_, 0, 2)) {
+	# grep out those already installed
+	($installed++, next)
+	    if defined(_version_check(_load($pkg), $ver));
+	push @modules, $pkg, $ver;
+    }
+
+    return $installed unless @modules; # nothing to do
 
     print "*** Installing dependencies...\n";
 
     return unless _connected_to('cpan.org');
-    
+
     if (_has_cpanplus()) {
-	require CPANPLUS::Backend;
+	$installed += _install_cpanplus(\@modules, \@config);
     }
     else {
-	return unless _can_write(
-	    MM->catfile($CPAN::Config->{cpan_home}, 'sources')
-	);
-
-	# if we're root, set UNINST=1 to avoid trouble unless user asks for it.
-	$CPAN::Config->{make_install_arg} .= ' UNINST=1' if index(
-	    $CPAN::Config->{make_install_arg} ||= '', 'UNINST'
-	) == -1 and eval qq{ $> eq '0' };
-
-	# don't show start-up info
-	$CPAN::Config->{inhibit_startup_message} = 1;
-
-	# set additional options
-	while (my ($opt, $arg) = splice(@config, 0, 2)) {
-	    ($force = $arg, next) if $opt eq 'force'; # pseudo-option
-	    $CPAN::Config->{$opt} = $arg;
-	}
-    }
-
-    my $installed = 0;
-    my $cpanplus_backend = CPANPLUS::Backend->new if $HasCPANPLUS;
-
-    while (my ($pkg, $ver) = splice(@_, 0, 2)) {
-	print "*** Installing $pkg...\n";
-
-	my $pathname = $pkg; $pathname =~ s/::/\\W/;
-	delete $INC{$_} foreach grep { m/$pathname.pm/i } keys(%INC);
-
-	if ($cpanplus_backend) {
-	    $cpanplus_backend->install(modules => [ $pkg ]);
-	    $installed++; next;
-	}
-
-	require CPAN; CPAN::Config->load;
-	my $obj = CPAN::Shell->expand(Module => $pkg);
-
-	if ($obj and defined(_version_check($obj->cpan_version, $ver))) {
-	    $obj->force('install') if $force;
-	    $obj->install;
-	    $installed++;
-	}
-	else {
-	    print << ".";
-
-*** Could not find a version $ver or above for $pkg; skipping.
-.
-	}
+	$installed += _install_cpan(\@modules, \@config);
     }
 
     print "*** $class installation finished.\n";
@@ -400,8 +377,119 @@ sub install {
     return $installed;
 }
 
+sub _install_cpanplus {
+    my @modules = @{+shift};
+    my @config  = @{+shift};
+    my $installed = 0;
+
+    require CPANPLUS::Backend;
+    my $cp   = CPANPLUS::Backend->new;
+    my $conf = $cp->configure_object;
+
+    return unless _can_write($conf->_get_build('base'));
+
+    # if we're root, set UNINST=1 to avoid trouble unless user asked for it.
+    my $makeflags = $conf->get_conf('makeflags') || '';
+    if (UNIVERSAL::isa($makeflags, 'HASH')) {
+	# 0.03+ uses a hashref here
+	$makeflags->{UNINST} = 1 unless exists $makeflags->{UNINST};
+    }
+    else {
+	# 0.02 and below uses a scalar
+	$makeflags = join(' ', split(' ', $makeflags), 'UNINST=1')
+	    if ($makeflags !~ /\bUNINST\b/ and eval qq{ $> eq '0' });
+    }
+    $conf->set_conf(makeflags => $makeflags);
+
+    my $modtree = $cp->module_tree;
+    while (my ($pkg, $ver) = splice(@modules, 0, 2)) {
+	print "*** Installing $pkg...\n";
+
+	my $obj = $modtree->{$pkg};
+
+	if ($obj and defined(_version_check($obj->{version}, $ver))) {
+	    my $pathname = $pkg; $pathname =~ s/::/\\W/;
+	    delete $INC{$_} foreach grep { m/$pathname.pm/i } keys(%INC);
+	    my $i; # used below to strip leading '-' from config keys
+	    
+	    if ($obj->install(@config)) {
+		$installed++;
+		print "*** $pkg successfully installed.\n";
+	    }
+	    else {
+		print "*** $pkg installation failed.\n";
+	    }
+	}
+	else {
+	    print << ".";
+*** Could not find a version $ver or above for $pkg; skipping.
+.
+	}
+    }
+
+    return $installed;
+}
+
+sub _install_cpan {
+    my @modules = @{+shift};
+    my @config  = @{+shift};
+    my $installed = 0;
+    my $force;
+
+    return unless _can_write(MM->catfile($CPAN::Config->{cpan_home}, 'sources'));
+
+    # if we're root, set UNINST=1 to avoid trouble unless user asked for it.
+    my $makeflags = $CPAN::Config->{make_install_arg} || '';
+    $CPAN::Config->{make_install_arg} = join(' ', split(' ', $makeflags), 'UNINST=1')
+	if ($makeflags !~ /\bUNINST\b/ and eval qq{ $> eq '0' });
+
+    # don't show start-up info
+    $CPAN::Config->{inhibit_startup_message} = 1;
+
+    # set additional options
+    while (my ($opt, $arg) = splice(@config, 0, 2)) {
+	($force = $arg, next) if $opt eq 'force'; # pseudo-option
+	$CPAN::Config->{$opt} = $arg;
+    }
+
+    require CPAN; CPAN::Config->load;
+
+    while (my ($pkg, $ver) = splice(@modules, 0, 2)) {
+	print "*** Installing $pkg...\n";
+
+	my $obj = CPAN::Shell->expand(Module => $pkg);
+
+	if ($obj and defined(_version_check($obj->cpan_version, $ver))) {
+	    my $pathname = $pkg; $pathname =~ s/::/\\W/;
+	    delete $INC{$_} foreach grep { m/$pathname.pm/i } keys(%INC);
+
+	    $obj->force('install') if $force;
+
+	    if ($obj->install eq 'YES') {
+		$installed++;
+		print "*** $pkg successfully installed.\n";
+	    }
+	    else {
+		print "*** $pkg installation failed.\n";
+	    }
+	}
+	else {
+	    print << ".";
+*** Could not find a version $ver or above for $pkg; skipping.
+.
+	}
+    }
+
+    return $installed;
+}
+
 sub _has_cpanplus {
-    return ($HasCPANPLUS = eval "use CPANPLUS; 1;");
+    return (
+	$HasCPANPLUS = (
+	    $INC{'CPANPLUS/Config.pm'} or
+	    eval "use CPANPLUS::Shell::Default; 1;"
+	)
+    );
 }
 
 # make guesses on whether we're under the CPAN installation directory
@@ -441,6 +529,7 @@ sub _update_to {
 .
 }
 
+# check if we're connected to some host, using inet_aton
 sub _connected_to {
     my $site = shift;
 
@@ -453,9 +542,10 @@ sub _connected_to {
     );
 }
 
+# check if a directory is writable; may create it on demand
 sub _can_write {
     my $path = shift;
-    mkdir ($path, 0777) unless -e $path;
+    mkdir ($path, 0755) unless -e $path;
 
     return (
 	-w $path or _prompt(qq(
@@ -466,12 +556,14 @@ sub _can_write {
     );
 }
 
+# load a module and return the version it reports
 sub _load {
     my $mod = pop; # class/instance doesn't matter
     local $@;
     return eval qq{ use $mod; $mod->VERSION } || ($@ ? undef : 0);
 }
 
+# compare two versions, either use Sort::Versions or plain comparison
 sub _version_check {
     my ($cur, $min) = @_; $cur =~ s/\s+$//;
 
@@ -489,6 +581,7 @@ sub _version_check {
 # nothing; this usage is deprecated.
 sub main::PREREQ_PM { return {}; }
 
+# a wrapper to ExtUtils::MakeMaker::WriteMakefile
 sub main::WriteMakefile {
     require Carp;
     Carp::croak "WriteMakefile: Need even number of args" if @_ % 2;
@@ -531,8 +624,12 @@ sub main::WriteMakefile {
     );
 
     no strict 'refs';
+
+    my $old_postamble = defined(&MY::postamble) ? \&MY::postamble : sub { '' };
+
     *{'MY::postamble'} = sub {
-	return << ".";
+	return &{$old_postamble} . << ".";
+
 config :: installdeps
 
 checkdeps ::
@@ -577,7 +674,7 @@ Autrijus Tang E<lt>autrijus@autrijus.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 2001 by Autrijus Tang E<lt>autrijus@autrijus.orgE<gt>.
+Copyright 2001, 2002 by Autrijus Tang E<lt>autrijus@autrijus.orgE<gt>.
 
 This program is free software; you can redistribute it and/or 
 modify it under the same terms as Perl itself.
