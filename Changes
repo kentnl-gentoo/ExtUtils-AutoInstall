@@ -1,68 +1,96 @@
 ____________________________________________________________________________
-[  2158] By: autrijus@autribsd                     on 2001/10/19 09:42:52
-	Log: * oops. upgrade bootstrap code.
+[  2251] By: autrijus                              on 2001/11/02  10:17:05
+        Log: * oops. the AutoInstall.pm failes to ackledge hash args.
+             * reflect the changes in test.pl.
+	   ! AutoInstall.pm test.pl
 ____________________________________________________________________________
-[  2155] By: autrijus@autribsd                     on 2001/10/19 09:04:36
-	Log: * This be ExtUtils::AutoInstall 0.23.
-	     * more robust bootstrap code sample.
-	     * put brief introductory text into README.
-	     * some random TODOs.
+[  2250] By: autrijus                              on 2001/11/02  09:31:30
+        Log: * added the missing '- ' before each module.
+             * this be ExtUtils::AutoInstall v 0.23.
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2154] By: autrijus@autribsd                     on 2001/10/19 08:47:48
-	Log: * version number crept in test. bad.
+[  2227] By: autrijus                              on 2001/10/28  11:05:51
+        Log: * oops, didn't test for core features.
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2153] By: autrijus@autribsd                     on 2001/10/19 08:44:50
-	Log: * do away with Test::More; too much hassle.
-	     * mentioned schwern's license.
+[  2226] By: autrijus                              on 2001/10/28  10:41:18
+        Log: * very esoteric way to determine max module length.
+             * removed the padding spaces.
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2151] By: autrijus@autribsd                     on 2001/10/19 06:24:00
-	Log: * uses _prompt to improve clarity.
-	     * needs Test::More 0.31+ to test things now.
-	     * revised test to ensure the promised interface on POD works.
+[  2159] By: autrijus                              on 2001/10/18  18:47:25
+        Log: * cleanup and changes.
+	   ! Changes MANIFEST
 ____________________________________________________________________________
-[  2145] By: autrijus@autribsd                     on 2001/10/18 17:17:08
-	Log: * everything goes to STDOUT now.
-	     * skips unknown directives. (XXX: maybe should warn)
-	     * fix non-numeric comparison.
+[  2155] By: autrijus                              on 2001/10/18  18:04:36
+        Log: * This be ExtUtils::AutoInstall 0.23.
+             * more robust bootstrap code sample.
+             * put brief introductory text into README.
+             * some random TODOs.
+	   + TODO
+	   ! AutoInstall.pm README
 ____________________________________________________________________________
-[  2144] By: autrijus@autribsd                     on 2001/10/18 17:05:40
-	Log: * a better check routine suitable to both adults and children.
+[  2154] By: autrijus                              on 2001/10/18  17:47:48
+        Log: * version number crept in test. bad.
+	   ! test.pl
 ____________________________________________________________________________
-[  2133] By: autrijus@autribsd                     on 2001/10/18 07:39:51
-	Log: * de-bump.
+[  2153] By: autrijus                              on 2001/10/18  17:44:50
+        Log: * do away with Test::More; too much hassle.
+             * mentioned schwern's license.
+	   ! AutoInstall.pm Makefile.PL test.pl
 ____________________________________________________________________________
-[  2132] By: autrijus@autribsd                     on 2001/10/18 07:39:28
-	Log: * inhibits CPAN startup message.
-	     * new feature: -config could now be used to specify
-	     CPAN::Config options.
-	     * arrayref which orders are insignificant could be passed as
-	     hashrefs too.
+[  2151] By: autrijus                              on 2001/10/18  15:24:00
+        Log: * uses _prompt to improve clarity.
+             * needs Test::More 0.31+ to test things now.
+             * revised test to ensure the promised interface on POD works.
+	   ! AutoInstall.pm Makefile.PL test.pl
 ____________________________________________________________________________
-[  2130] By: autrijus@autribsd                     on 2001/10/18 07:00:41
-	Log: * solves the UNINST=0 problem manually.
-	     * makes 5.005_03 happy with us.
+[  2145] By: autrijus                              on 2001/10/18  02:17:08
+        Log: * everything goes to STDOUT now.
+             * skips unknown directives. (XXX: maybe should warn)
+             * fix non-numeric comparison.
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2120] By: autrijus@autribsd                     on 2001/10/17 07:18:54
-	Log: * changes.
+[  2133] By: autrijus                              on 2001/10/17  16:39:51
+        Log: * de-bump.
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2119] By: autrijus@autribsd                     on 2001/10/17 07:16:17
-	Log: * This be ExtUtils::AutoInstall v0.21, compatibility release.
-	     * (v0.2 used to break against OurNet::BBS v1.62.)
+[  2132] By: autrijus                              on 2001/10/17  16:39:28
+        Log: * inhibits CPAN startup message.
+             * new feature: -config could now be used to specify CPAN::Config options.
+             * arrayref which orders are insignificant could be passed as hashrefs too.
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2118] By: autrijus@autribsd                     on 2001/10/17 07:13:43
-	Log: * bugward combatibility.
+[  2130] By: autrijus                              on 2001/10/17  16:00:41
+        Log: * solves the UNINST=0 problem manually.
+             * makes 5.005_03 happy with us.
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2117] By: autrijus@autribsd                     on 2001/10/17 07:05:17
-	Log: * gets the two modules in sync.
+[  2120] By: autrijus                              on 2001/10/16  16:18:54
+        Log: * changes.
+	   ! Changes
 ____________________________________________________________________________
-[  2115] By: autrijus@autribsd                     on 2001/10/17 06:31:33
-	Log: * self-bootstrapping code, a really funky feature.
+[  2119] By: autrijus                              on 2001/10/16  16:16:17
+        Log: * This be ExtUtils::AutoInstall v0.21, compatibility release.
+             * (v0.2 used to break against OurNet::BBS v1.62.)
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2108] By: autrijus@autricvic                    on 2001/10/17 02:56:56
-	Log: * oops.
+[  2118] By: autrijus                              on 2001/10/16  16:13:43
+        Log: * bugward combatibility.
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2107] By: autrijus@autricvic                    on 2001/10/17 02:55:21
-	Log: * changes.
+[  2115] By: autrijus                              on 2001/10/16  15:31:33
+        Log: * self-bootstrapping code, a really funky feature.
+	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2104] By: autrijus@autribsd                     on 2001/10/17 02:49:40
-	Log: * a separate distro: AutoInstall.
+[  2108] By: autrijus                              on 2001/10/16  11:56:56
+        Log: * oops.
+	   ! README
+____________________________________________________________________________
+[  2107] By: autrijus                              on 2001/10/16  11:55:21
+        Log: * changes.
+	   ! Changes
+____________________________________________________________________________
+[  2104] By: autrijus                              on 2001/10/16  11:49:40
+        Log: * a separate distro: AutoInstall.
+	   + AutoInstall.pm Changes MANIFEST Makefile.PL README test.pl

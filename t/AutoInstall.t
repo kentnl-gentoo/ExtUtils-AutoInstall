@@ -1,11 +1,11 @@
 #!/usr/bin/perl
-# $File: //member/autrijus/ExtUtils-AutoInstall/test.pl $ $Author: autrijus $
-# $Revision: #4 $ $Change: 2154 $ $DateTime: 2001/10/19 08:47:48 $
+# $File: //member/autrijus/ExtUtils-AutoInstall/t/AutoInstall.t $ $Author: autrijus $
+# $Revision: #3 $ $Change: 2599 $ $DateTime: 2001/12/13 23:26:30 $
 
 use strict;
 use Test;
 
-BEGIN { plan tests => 6 };
+BEGIN { plan tests => 6; $^W = 0; };
 
 # Intercepts calls to WriteMakefile and prompt.
 my $mm_args;
@@ -46,7 +46,7 @@ use ExtUtils::AutoInstall (
     ],
     'Feature2'	=> [
 	# associate tests to be disabled along with this
-	-tests	=> [ <t/feature2*.t> ],
+	-tests	=> [ <t/AutoInstall.t> ],
 	Package2	=> '0.02',
     ],
     'Feature3'	=> {		# hash reference works, too
@@ -67,16 +67,17 @@ WriteMakefile(
 
 $$out =~ s/.*\n//; # strip the version-dependent line.
 
-ok($$out, << '.');
-*** Checking for dependencies...
+ok($$out, qr/\Q*** Checking for dependencies...
+[Core Features]
+- Package0 ...failed! (needed)
 [Feature1]
-- Package1         ...failed! (needs 0.01)
+- Package1 ...failed! (needs 0.01)
 [Feature2]
-- Package2         ...failed! (needs 0.02)
+- Package2 ...failed! (needs 0.02)
 [Feature3]
-- Package3         ...failed! (needs 0.03)
-*** ExtUtils::AutoInstall finished.
-.
+- Package3 ...failed! (needs 0.03)\E
+.*\Q
+*** ExtUtils::AutoInstall configuration finished.\E/s);
 
 use vars qw/@Data_Stack $DNE/;
 
@@ -84,7 +85,7 @@ ok(_deep_check($mm_args, {
     'ABSTRACT', 'Perl Interface to Joe Hacker', 'test', { 'TESTS' => '' },
     'NAME', 'Joe::Hacker', 'DISTNAME', 'Joe-Hacker', 'AUTHOR',
     'Joe Hacker (joe@hacker.org)', 'EXE_FILES', [], 'VERSION_FROM',
-    'Hacker.pm', 'PREREQ_PM', {},
+    'Hacker.pm',
 }));
 
 #######################################################################

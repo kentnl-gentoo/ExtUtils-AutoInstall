@@ -1,10 +1,10 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #14 $ $Change: 2158 $ $DateTime: 2001/10/19 09:42:52 $
+# $Revision: #19 $ $Change: 2598 $ $DateTime: 2001/12/13 23:21:33 $
 
 package ExtUtils::AutoInstall;
 require 5.005;
 
-$ExtUtils::AutoInstall::VERSION = '0.22';
+$ExtUtils::AutoInstall::VERSION = '0.24';
 
 use strict;
 
@@ -92,16 +92,20 @@ Finally, the C<WriteMakefile()> is overridden to perform some
 additional checks, as well as skips tests associated with
 disabled features by the C<-tests> option.
 
+The actual installation happens right after at the end of the C<make
+config> target; i.e. both C<make test> and C<make install> will
+trigger the installation of required modules first.
+
 =head1 CAVEATS
 
-As of v0.22, B<ExtUtils::AutoInstall> will add C<UNINST=1>
-to your B<make install> flag if your effective uid is 0 (root),
-unless you explicitly disable it by setting B<CPAN>'s
-C<make_install_arg> configuration option to include C<UNINST=0>.
+Since v0.22, B<ExtUtils::AutoInstall> will add C<UNINST=1> to your
+B<make install> flag if your effective uid is 0 (root), unless one
+explicitly disable it by setting B<CPAN>'s C<make_install_arg>
+configuration option to include C<UNINST=0>.
 
 This I<might> cause dependency problems if you are using a
 customized directory structure for your site. Please consult
-L<CPAN/FAQ> for a explanation in detail.
+L<CPAN/FAQ> for an explanation in detail.
 
 =head1 NOTES
 
@@ -126,7 +130,7 @@ a I<bootstrapping> mechanism via the C<-version> flag. If a newer
 version is needed by the F<Makefile.PL>, it will go ahead to fetch
 a new version, reload it into memory, and pass the arguments forward.
 
-If you have any recommendations, please let me know. Thanks.
+If you have any ideas, please let me know. Thanks.
 
 =cut
 
@@ -137,7 +141,7 @@ my %FeatureMap = (
 );
 
 # missing modules, existing modules, disabled tests
-my (@Missing, @Existing, %DisabledTests); 
+my (@Missing, @Existing, %DisabledTests, $UnderCPAN, $Config); 
 
 sub _prompt { goto &ExtUtils::MakeMaker::prompt; }
 
@@ -145,11 +149,23 @@ sub import {
     my $class = shift;
     my @args  = @_ or return;
 
+    foreach my $arg (@ARGV) {
+	$Config = [ split(',', $1) ] and next	 if $arg =~ /^--config=(.*)$/;
+	$class->install($Config, split(',', $1)) if $arg =~ /^--install=(.*)$/;
+	exit 0;
+    }
+
     print "*** $class version ".$class->VERSION."\n";
     print "*** Checking for dependencies...\n";
 
-    my $cwd	= Cwd::cwd();
-    my $config  = [];
+    my $cwd = Cwd::cwd();
+
+    $Config  = [];
+
+    my $maxlen = length((sort { length($b) <=> length($a) }
+	grep { /^[^\-]/ } map { keys %{ref($_) eq 'HASH' ? $_ : +{@{$_}}} }
+	map { +{@args}->{$_} }
+	grep { /^[^\-]/ or /^-core$/i } keys %{+{@args}})[0]);
 
     while (my ($feature, $modules) = splice(@args, 0, 2)) {
 	my (@required, @tests);
@@ -161,9 +177,9 @@ sub import {
 	    # check for a newer version of myself
 	    _update_to($modules, @_) and return	if $option eq 'version';
 	    # sets CPAN configuration options
-	    $config = $modules			if $option eq 'config';
+	    $Config = $modules			if $option eq 'config';
 
-	    next;
+	    next unless $option eq 'core';
 	}
 
 	print "[".($FeatureMap{lc($feature)} || $feature)."]\n";
@@ -183,7 +199,7 @@ sub import {
 		next;
 	    }
 
-	    printf("- %-16s ...", $mod);
+	    printf("- %-${maxlen}s ...", $mod);
 
 	    if (my $cur = _version_check(_load($mod), $arg ||= 0)) {
 		print "loaded. ($cur".($arg ? " >= $arg" : '').")\n";
@@ -209,13 +225,12 @@ sub import {
     }
 
     if (@Missing) {
-	print "*** Installing dependencies...\n" if @Missing;
-
 	require CPAN; CPAN::Config->load;
 
 	my $lock = MM->catfile($CPAN::Config->{cpan_home}, ".lock");
 
-	if (-f $lock and open(LOCK, $lock) and <LOCK> == getppid()
+	if (-f $lock and open(LOCK, $lock)
+	    and ($^O eq 'MSWin32' ? _under_cpan() : <LOCK> == getppid())
 	    and ($CPAN::Config->{prerequisites_policy} || '') ne 'ignore'
 	) {
 	    print << '.';
@@ -223,28 +238,27 @@ sub import {
 *** Since we're running under CPAN, I'll just let it take care
     of the dependency's installation later.
 .
+	    $UnderCPAN = 1;
 	}
-	elsif (!_install($config, @Missing)) {
+	else {
 	    print << '.';
-
-*** Okay, skipped auto-installation. However, you should still
-    install the missing modules manually before doing 'make test'
-    or 'make install'.
+*** Dependencies will be installed the next time you type 'make'.
 .
 	}
-
-	print "\n";
 
 	close LOCK;
     }
 
     chdir $cwd;
 
-    print "*** $class finished.\n";
+    print "*** $class configuration finished.\n";
 }
 
-sub _install {
-    my @config = UNIVERSAL::isa($_[0], 'HASH') ? %{+shift} : @{+shift};
+sub install {
+    my $class  = shift;
+    my @config = @{+shift};
+
+    print "*** Installiing dependencies...\n";
 
     return unless _connected_to('cpan.org') and _can_write(
 	MM->catfile($CPAN::Config->{cpan_home}, 'sources')
@@ -269,6 +283,7 @@ sub _install {
 	my $pathname = $pkg; $pathname =~ s/::/\\W/;
 	delete $INC{$_} foreach grep { m/$pathname.pm/i } keys(%INC);
 
+	require CPAN; CPAN::Config->load;
 	my $obj = CPAN::Shell->expand(Module => $pkg);
 
 	if ($obj and _version_check($obj->cpan_version, $ver)) {
@@ -283,9 +298,21 @@ sub _install {
 	}
     }
 
+    print "*** $class installation finished.\n";
+
     return $installed;
 }
 
+# make guesses on whether we're under the CPAN installation directory
+sub _under_cpan {
+    require Cwd;
+    require File::Spec;
+
+    my $cwd  = File::Spec->canonpath(Cwd::cwd());
+    my $cpan = File::Spec->canonpath($CPAN::Config->{cpan_home});
+    
+    return (index($cwd, $cpan) > -1);
+}
 
 sub _update_to {
     my $class = __PACKAGE__;
@@ -342,7 +369,7 @@ sub _load {
 }
 
 sub _version_check {
-    my ($cur, $min) = @_;
+    my ($cur, $min) = @_; $cur =~ s/\s+$//;
 
     if ($Sort::Versions::VERSION or _load('Sort::Versions')) {
 	# use Sort::Versions as the sorting algorithm 
@@ -363,7 +390,8 @@ sub main::WriteMakefile {
     Carp::croak "WriteMakefile: Need even number of args" if @_ % 2;
 
     my %args = @_;
-    $args{PREREQ_PM} = { %{$args{PREREQ_PM} ||= {}}, @Existing, @Missing };
+    $args{PREREQ_PM} = { %{$args{PREREQ_PM} ||= {} }, @Existing, @Missing }
+	if $UnderCPAN;
 
     if ($args{EXE_FILES}) {
 	require ExtUtils::Manifest;
@@ -378,6 +406,16 @@ sub main::WriteMakefile {
     $args{test}{TESTS} = join(' ', grep {
 	!exists($DisabledTests{$_}) 
     } map { glob($_) } split(/\s+/, $args{test}{TESTS}));
+
+    my $missing = join(',', @Missing);
+    my $config  = join(',',
+	UNIVERSAL::isa($Config, 'HASH') ? %{$Config} : @{$Config}
+    );
+
+    no strict 'refs';
+    *{'MY::postamble'} = sub {
+	"config ::\n\t\$(PERL) $0 --config=$config --install=$missing\n"
+    } if $missing;
 
     ExtUtils::MakeMaker::WriteMakefile(%args);
 }
