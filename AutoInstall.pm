@@ -1,8 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #41 $ $Change: 4884 $ $DateTime: 2003/03/22 23:44:37 $
+# $Revision: #43 $ $Change: 4934 $ $DateTime: 2003/03/25 16:52:18 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.49';
+$ExtUtils::AutoInstall::VERSION = '0.50';
 
 use strict;
 
@@ -15,8 +15,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.49 of B<ExtUtils::AutoInstall>,
-released March 23, 2002.
+This document describes version 0.50 of B<ExtUtils::AutoInstall>,
+released March 26, 2002.
 
 =head1 SYNOPSIS
 
@@ -294,7 +294,7 @@ sub _init {
 	    $Config = [ split(',', $1) ];
 	}
 	elsif ($arg =~ /^--installdeps=(.*)$/) {
-	    __PACKAGE__->install($Config, split(',', $1));
+	    __PACKAGE__->install($Config, @Missing = split(/,/, $1));
 	    exit 0;
 	}
 	elsif ($arg =~ /^--default(?:deps)?$/) {
@@ -721,14 +721,17 @@ sub _can_write {
     my $path = shift;
     mkdir ($path, 0755) unless -e $path;
 
-    return 1 if -w $path;
+    require Config;
+    return 1 if -w $path and -w $Config::Config{sitelib};
 
     print << ".";
 *** You are not allowed to write to the directory '$path';
     the installation may fail due to insufficient permissions.
 .
 
-    if (eval '$>' and lc(`sudo -V`) =~ /version/) {
+    if (eval '$>' and lc(`sudo -V`) =~ /version/ and _prompt(qq(
+==> Should we try to re-execute the autoinstall process with 'sudo'?), 'y'
+    ) =~ /^[Yy]/) {
 	# try to bootstrap ourselves from sudo
 	print << ".";
 *** Trying to re-execute the autoinstall process with 'sudo'...

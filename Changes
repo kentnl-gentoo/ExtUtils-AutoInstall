@@ -1,3 +1,7 @@
+0.50:
+    - Corrects the bug which prevents 'sudo' on 'make installdeps'.
+    - Now asks before launching 'sudo' at request of Brian Ingerson.
+
 0.49:
     - Works with dmake now.
     - Shows 'nmake install' etc instead of 'make install' according

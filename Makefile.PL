@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/Makefile.PL $ $Author: autrijus $
-# $Revision: #7 $ $Change: 4636 $ $DateTime: 2003/03/07 17:25:35 $
+# $Revision: #8 $ $Change: 4887 $ $DateTime: 2003/03/23 00:10:11 $
 
 use inc::Module::Install;
 require './AutoInstall.pm';
@@ -34,4 +34,5 @@ features(
 
 check_nmake();
 auto_install();
+&Meta->write;
 &Makefile->write;
