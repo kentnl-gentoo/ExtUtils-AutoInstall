@@ -1,8 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #35 $ $Change: 4782 $ $DateTime: 2003/03/18 19:50:31 $
+# $Revision: #41 $ $Change: 4884 $ $DateTime: 2003/03/22 23:44:37 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.48';
+$ExtUtils::AutoInstall::VERSION = '0.49';
 
 use strict;
 
@@ -15,23 +15,26 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.48 of B<ExtUtils::AutoInstall>,
-released March 19, 2002.
+This document describes version 0.49 of B<ExtUtils::AutoInstall>,
+released March 23, 2002.
 
 =head1 SYNOPSIS
 
 In F<Makefile.PL>:
 
-    # ExtUtils::AutoInstall Bootstrap Code, version 6.
+    # ExtUtils::AutoInstall Bootstrap Code, version 7.
     BEGIN{my$p='ExtUtils::AutoInstall';my$v=0.45;$p->VERSION||0>=$v
     or+eval"use $p $v;1"or+do{my$e=$ENV{PERL_EXTUTILS_AUTOINSTALL};
     (!defined($e)||$e!~m/--(?:default|skip|testonly)/and-t STDIN or
     eval"use ExtUtils::MakeMaker;WriteMakefile(PREREQ_PM=>{'$p',$v}
     );1"and exit)and print"==> $p $v required. Install it from CP".
     "AN? [Y/n] "and<STDIN>!~/^n/i and print"*** Installing $p\n"and
-    do{eval{require CPANPLUS;CPANPLUS::install $p};eval("use $p $v;
-    1")||eval{require CPAN;CPAN::install$p};eval"use $p $v;1"or die
-    "*** Please manually install $p $v from cpan.org first...\n"}}}
+    do{if (eval '$>' and lc(`sudo -V`) =~ /version/){system('sudo',
+    $^X,"-MCPANPLUS","-e","CPANPLUS::install $p");eval"use $p $v;1"
+    ||system('sudo', $^X, "-MCPAN", "-e", "CPAN::install $p")}eval{
+    require CPANPLUS;CPANPLUS::install$p};eval"use $p $v;1"or eval{
+    require CPAN;CPAN::install$p};eval"use $p $v;1"||die"*** Please
+    manually install $p $v from cpan.org first...\n"}}}
 
     # optional pre-install handler; takes $module_name and $version
     # sub MY::preinstall  { return 1; }	# return false to skip install
@@ -421,8 +424,12 @@ sub import {
 
     _check_lock(); # check for $UnderCPAN
 
-    print "*** Dependencies will be installed the next time you type 'make'.\n"
-	if (@Missing and not ($CheckOnly or $UnderCPAN));
+    if (@Missing and not ($CheckOnly or $UnderCPAN)) {
+	require Config;
+	print "*** Dependencies will be installed the next time you type '$Config::Config{make}'.\n";
+	# make an educated guess of whether we'll need root permission.
+	print "    (You may need to do that as the 'root' user.)\n" if eval '$>';
+    }
     print "*** $class configuration finished.\n";
 
     chdir $cwd;
@@ -714,13 +721,33 @@ sub _can_write {
     my $path = shift;
     mkdir ($path, 0755) unless -e $path;
 
-    return (
-	-w $path or _prompt(qq(
+    return 1 if -w $path;
+
+    print << ".";
 *** You are not allowed to write to the directory '$path';
     the installation may fail due to insufficient permissions.
+.
+
+    if (eval '$>' and lc(`sudo -V`) =~ /version/) {
+	# try to bootstrap ourselves from sudo
+	print << ".";
+*** Trying to re-execute the autoinstall process with 'sudo'...
+.
+        my $missing = join(',', @Missing);
+        my $config  = join(',',
+	    UNIVERSAL::isa($Config, 'HASH') ? %{$Config} : @{$Config}
+        ) if $Config;
+
+	return unless system('sudo', $^X, $0, "--config=$config", "--installdeps=$missing");
+
+	print << ".";
+*** The 'sudo' command exited with error!  Resuming...
+.
+    }
+
+    return _prompt(qq(
 ==> Should we try to install the required module(s) anyway?), 'n'
-	) =~ /^[Yy]/
-    );
+    ) =~ /^[Yy]/
 }
 
 # load a module and return the version it reports
@@ -833,12 +860,13 @@ sub postamble {
     return << ".";
 
 config :: installdeps
+\t\@\$(NOOP)
 
 checkdeps ::
-	\$(PERL) $0 --checkdeps
+\t\$(PERL) $0 --checkdeps
 
 installdeps ::
-	$PostambleActions
+\t$PostambleActions
 
 .
 

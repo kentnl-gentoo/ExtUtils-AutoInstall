@@ -1,3 +1,10 @@
+0.49:
+    - Works with dmake now.
+    - Shows 'nmake install' etc instead of 'make install' according
+      to Config.pm settings.
+    - If the user don't have root permission for installing things,
+      and the 'sudo' command is available, use it.
+
 0.48:
     - Duh, 0.47 went out with the signature of 0.46.  Thanks to
       Jonathan Leffler for pointing this out.

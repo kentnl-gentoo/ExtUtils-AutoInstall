@@ -15,26 +15,26 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 cae1319cc4e6d708da175a835ab4cfaf5e7b48b1 AUTHORS
-SHA1 33233c3deb695a9199f366f44d85b115c899879d AutoInstall.pm
-SHA1 350ab22e206b0217403e6550d13c1761259bff3c Changes
+SHA1 9026299a619d5deb9a41f0e64bcb9d50c5a243ed AutoInstall.pm
+SHA1 20087bf04c3c9367148b56beb02682c5f0d3e645 Changes
 SHA1 2a7b85483d6f5b8504b8eeca06711f133c6e7ae6 MANIFEST
 SHA1 ab56b8b9992aac1fa3947151c39c93e14e96c19b Makefile.PL
-SHA1 e7fdfbc56d030ecc1988ba67ab1361712cbc3a9b README
+SHA1 4c2e2c7ddcd3fe3724711c13516a7ad6212791a6 README
 SHA1 4af539bc7000a591ec64b955caa32053e558b28c TODO
-SHA1 e41ee5639a34cdbb8b563af074db78b9ad681bf2 inc/Module/Install.pm
-SHA1 5019141daf8bb02373197d8d19efdce223bc0135 inc/Module/Install/AutoInstall.pm
-SHA1 8ec56754a423c10b51bd8c04ae5cc7275daeedd4 inc/Module/Install/Base.pm
-SHA1 4ee83e55df68ce77a48b2b64556b10629fa8cccd inc/Module/Install/Can.pm
+SHA1 e3c2a5ee716e65b0e9a0d92ea492be19ff86ca43 inc/Module/Install.pm
+SHA1 5593bda10a6ce913d637aafde44e0f03b7166872 inc/Module/Install/AutoInstall.pm
+SHA1 364a32d451f89951a6059478bfe78d2266c2bf02 inc/Module/Install/Base.pm
+SHA1 a38067f9bfb570e269cd1bb4b99ca7ad9266769f inc/Module/Install/Can.pm
 SHA1 0c216d70f5d38994402574868b26225b7d19e12d inc/Module/Install/Fetch.pm
-SHA1 901c05dda0fb0563896fcde16c5572672f4bf8f0 inc/Module/Install/Makefile.pm
-SHA1 07f47e5293701730404a96f6c6a07692adab6a7b inc/Module/Install/Metadata.pm
+SHA1 94d05dd5f2f5abdfa6dad66b656348b1cdb24bcc inc/Module/Install/Makefile.pm
+SHA1 c513b51407393fd668e4d6d18dfe9f2c026c0fad inc/Module/Install/Metadata.pm
 SHA1 737e4f882cfa3b4f31cb3cc076a67425a9db5c09 inc/Module/Install/Win32.pm
 SHA1 a46a0b15aa815840808d3d3ba19b30e0753130d7 t/0-signature.t
 SHA1 34c8171bcf31904e463545d9be51a09d7adb3fc3 t/AutoInstall.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.1 (FreeBSD)
 
-iD8DBQE+d3pwtLPdNzw1AaARAoejAJ9b3ypC4f0iBe2/GIYVt4CcWlAwnwCfdVgA
-/YMiKaa4LKDPQMseUS8r0AI=
-=3hCX
+iD8DBQE+fPiStLPdNzw1AaARAtjwAJ9klraE22t5SLEMd86s3llcumz0EwCgn+9F
+db3HnWMnjr0nBeamcXdNR/I=
+=dF6d
 -----END PGP SIGNATURE-----

@@ -1,5 +1,5 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/README $ $Author: autrijus $
-# $Revision: #2 $ $Change: 1340 $ $DateTime: 2002/10/12 08:08:13 $
+# $Revision: #3 $ $Change: 4885 $ $DateTime: 2003/03/22 23:48:18 $
 
 This is the README file for ExtUtils::AutoInstall, a module to
 let Makefile.PL automatically install dependencies via CPAN or
@@ -16,11 +16,13 @@ Most notable features include:
 - Utilizes CPANPLUS and/or Sort::Versions where feasible.
 - Offers check-only and skip-all Makefile.PL targets.
 - Offers check-only and install-only Makefile targets.
+- Take advantage of the 'sudo' command where available.
 
 * Installation
 
 ExtUtils::AutoInstall uses the standard perl module install process:
 
+cpansign -v		# see SIGNATURE for details
 perl Makefile.PL
 make
 make test
@@ -28,7 +30,7 @@ make install
 
 * Copyright
 
-Copyright 2001, 2002 by Autrijus Tang <autrijus@autrijus.org>.
+Copyright 2001, 2002, 2003 by Autrijus Tang <autrijus@autrijus.org>.
 
 All rights reserved.  You can redistribute and/or modify
 this bundle under the same terms as Perl itself.
