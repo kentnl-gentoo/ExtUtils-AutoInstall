@@ -1,3 +1,11 @@
+0.45:
+    - Switched to the much more elegant Module::Install framework.
+    - New 'do_once' pesudo-option to never attempt to install
+      previously-failed module again.
+    - Recommends 0.28 of version.pm now, which has a sane semantic.
+    - No longer export WriteMakefile to 'main' unless it's the caller.
+    - Refactored arguments-generation from Write() into _make_arg().
+
 0.44:
     - The bootstrap script is now -w safe, thanks to Jonathan.
     - The recommended version in bootstrap script is now 0.40.
