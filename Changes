@@ -1,9 +1,28 @@
 ____________________________________________________________________________
+[  9532] By: autrijus                              on 2004/01/01  06:47:30
+        Log: * This be 0.56.
+	   ! META.yml Makefile.PL README
+	   ! lib/ExtUtils/AutoInstall.pm
+____________________________________________________________________________
+[  9531] By: autrijus                              on 2004/01/01  06:45:57
+        Log: * makes it possible for -core features to -default to 0.
+             * now prompts "Auto-Install from CPAN?" to avoid ambiguity.
+	   ! lib/ExtUtils/AutoInstall.pm
+____________________________________________________________________________
+[  9085] By: autrijus                              on 2003/11/29  19:52:42
+        Log: * add signatures.
+	   ! Makefile.PL
+____________________________________________________________________________
+[  9083] By: autrijus                              on 2003/11/29  19:51:07
+        Log: * This be 0.55, for real.
+             * Changed "failed!" to "missing." and "needs" to "would
+	       need"
+             per suggestions from Alan Burlison.
+	   ! AUTHORS
+____________________________________________________________________________
 [  9082] By: autrijus                              on 2003/11/29  19:45:05
         Log: * This be 0.55.
              * add Module::Install examples.
-	     * changed "failed!" to "missing." and "needs" to "would need"
-	       per suggestions from Alan Burlison.
 	   ! lib/ExtUtils/AutoInstall.pm
 ____________________________________________________________________________
 [  8105] By: autrijus                              on 2003/09/13  20:57:40
