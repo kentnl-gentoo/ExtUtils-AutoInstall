@@ -2,7 +2,7 @@
 # $Revision: #15 $ $Change: 1344 $ $DateTime: 2003/03/10 00:10:02 $ vim: expandtab shiftwidth=4
 
 package Module::Install::Metadata;
-use base 'Module::Install::Base';
+use Module::Install::Base; @ISA = qw(Module::Install::Base);
 
 $VERSION = '0.01';
 

@@ -2,7 +2,7 @@
 # $Revision: #9 $ $Change: 1341 $ $DateTime: 2003/03/09 23:28:03 $ vim: expandtab shiftwidth=4
 
 package Module::Install::AutoInstall;
-use base 'Module::Install::Base';
+use Module::Install::Base; @ISA = qw(Module::Install::Base);
 
 sub AutoInstall { $_[0] }
 

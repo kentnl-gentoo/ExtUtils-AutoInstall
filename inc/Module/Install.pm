@@ -1,5 +1,5 @@
 # $File: //depot/cpan/Module-Install/lib/Module/Install.pm $ $Author: autrijus $
-# $Revision: #42 $ $Change: 1359 $ $DateTime: 2003/03/11 01:49:03 $ vim: expandtab shiftwidth=4
+# $Revision: #43 $ $Change: 1371 $ $DateTime: 2003/03/18 04:22:04 $ vim: expandtab shiftwidth=4
 
 package Module::Install;
 $VERSION = '0.20';

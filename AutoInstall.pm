@@ -1,8 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #34 $ $Change: 4726 $ $DateTime: 2003/03/14 10:07:08 $
+# $Revision: #35 $ $Change: 4782 $ $DateTime: 2003/03/18 19:50:31 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.47';
+$ExtUtils::AutoInstall::VERSION = '0.48';
 
 use strict;
 
@@ -15,8 +15,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.47 of B<ExtUtils::AutoInstall>,
-released March 14, 2002.
+This document describes version 0.48 of B<ExtUtils::AutoInstall>,
+released March 19, 2002.
 
 =head1 SYNOPSIS
 

@@ -15,26 +15,26 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 cae1319cc4e6d708da175a835ab4cfaf5e7b48b1 AUTHORS
-SHA1 80f84b49710270c7f4d6bef00f643f4017ebbca6 AutoInstall.pm
-SHA1 71e6bc2d05e1f3ce940c413bf1dfcdf2c82d8788 Changes
-SHA1 2b36ee595ab8bb6c856e3997343de85bacf9bcd0 MANIFEST
+SHA1 33233c3deb695a9199f366f44d85b115c899879d AutoInstall.pm
+SHA1 350ab22e206b0217403e6550d13c1761259bff3c Changes
+SHA1 2a7b85483d6f5b8504b8eeca06711f133c6e7ae6 MANIFEST
 SHA1 ab56b8b9992aac1fa3947151c39c93e14e96c19b Makefile.PL
 SHA1 e7fdfbc56d030ecc1988ba67ab1361712cbc3a9b README
 SHA1 4af539bc7000a591ec64b955caa32053e558b28c TODO
-SHA1 f76b8b25a86ad7fd30b6cfa375857f6ae868fa7b inc/Module/Install.pm
-SHA1 488e9a7866469280884d69700419835cf00f567a inc/Module/Install/AutoInstall.pm
-SHA1 cea97807a177f1fa890b15076242dada8901e344 inc/Module/Install/Base.pm
-SHA1 5eb8fdd6b559befa4579e6138e8ebe3610d4c497 inc/Module/Install/Fetch.pm
-SHA1 656e5a6f5364f790015fcf189e860bf73a1842b2 inc/Module/Install/Makefile.pm
-SHA1 151e9035ca1641c828aec9747ef4cf4606c1f011 inc/Module/Install/Metadata.pm
-SHA1 249b2349cc3e1959dcb99708dfb3e0159194cc8c inc/Module/Install/Run.pm
-SHA1 7d0face3524789d75eee40207f90918818146c2b inc/Module/Install/Win32.pm
+SHA1 e41ee5639a34cdbb8b563af074db78b9ad681bf2 inc/Module/Install.pm
+SHA1 5019141daf8bb02373197d8d19efdce223bc0135 inc/Module/Install/AutoInstall.pm
+SHA1 8ec56754a423c10b51bd8c04ae5cc7275daeedd4 inc/Module/Install/Base.pm
+SHA1 4ee83e55df68ce77a48b2b64556b10629fa8cccd inc/Module/Install/Can.pm
+SHA1 0c216d70f5d38994402574868b26225b7d19e12d inc/Module/Install/Fetch.pm
+SHA1 901c05dda0fb0563896fcde16c5572672f4bf8f0 inc/Module/Install/Makefile.pm
+SHA1 07f47e5293701730404a96f6c6a07692adab6a7b inc/Module/Install/Metadata.pm
+SHA1 737e4f882cfa3b4f31cb3cc076a67425a9db5c09 inc/Module/Install/Win32.pm
 SHA1 a46a0b15aa815840808d3d3ba19b30e0753130d7 t/0-signature.t
 SHA1 34c8171bcf31904e463545d9be51a09d7adb3fc3 t/AutoInstall.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.1 (FreeBSD)
 
-iD8DBQE+azmStLPdNzw1AaARAt6mAKCIjA6DTbPdfsGRPQcnxUFMN469agCfZ3Cz
-HRcjseVFYWHkGIX5zenZEW8=
-=39ek
+iD8DBQE+d3pwtLPdNzw1AaARAoejAJ9b3ypC4f0iBe2/GIYVt4CcWlAwnwCfdVgA
+/YMiKaa4LKDPQMseUS8r0AI=
+=3hCX
 -----END PGP SIGNATURE-----

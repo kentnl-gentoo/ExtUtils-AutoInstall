@@ -1,3 +1,7 @@
+0.48:
+    - Duh, 0.47 went out with the signature of 0.46.  Thanks to
+      Jonathan Leffler for pointing this out.
+
 0.47:
     - Emergency release to combat PAUSE indexing this module
       to under the PAR namespace.  Thanks for Randal Schwartz
