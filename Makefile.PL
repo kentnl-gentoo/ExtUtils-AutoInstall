@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/Makefile.PL $ $Author: autrijus $
-# $Revision: #5 $ $Change: 4058 $ $DateTime: 2002/04/30 16:34:09 $
+# $Revision: #1 $ $Change: 1 $ $DateTime: 2002/06/11 08:35:12 $
 
 require 5.005;
 require 'AutoInstall.pm';

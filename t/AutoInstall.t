@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/t/AutoInstall.t $ $Author: autrijus $
-# $Revision: #6 $ $Change: 3507 $ $DateTime: 2002/03/21 20:25:04 $
+# $Revision: #1 $ $Change: 1 $ $DateTime: 2002/06/11 08:35:12 $
 
 use strict;
 use Test;
