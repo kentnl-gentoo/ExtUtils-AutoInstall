@@ -1,8 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #43 $ $Change: 4934 $ $DateTime: 2003/03/25 16:52:18 $
+# $Revision: #45 $ $Change: 5849 $ $DateTime: 2003/05/14 21:11:12 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.50';
+$ExtUtils::AutoInstall::VERSION = '0.51';
 
 use strict;
 
@@ -15,8 +15,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.50 of B<ExtUtils::AutoInstall>,
-released March 26, 2002.
+This document describes version 0.51 of B<ExtUtils::AutoInstall>,
+released May 15, 2003.
 
 =head1 SYNOPSIS
 
@@ -598,6 +598,8 @@ sub _install_cpan {
     my $installed = 0;
     my %args;
 
+    require CPAN; CPAN::Config->load;
+
     return unless _can_write(MM->catfile($CPAN::Config->{cpan_home}, 'sources'));
 
     # if we're root, set UNINST=1 to avoid trouble unless user asked for it.
@@ -614,8 +616,6 @@ sub _install_cpan {
 	    if $opt =~ /^force$/; # pseudo-option
 	$CPAN::Config->{$opt} = $arg;
     }
-
-    require CPAN; CPAN::Config->load;
 
     while (my ($pkg, $ver) = splice(@modules, 0, 2)) {
 	MY::preinstall($pkg, $ver) or next if defined &MY::preinstall;

@@ -1,5 +1,6 @@
-# $File: //depot/cpan/Module-Install/lib/Module/Install/Makefile.pm $ $Author: ingy $
-# $Revision: #38 $ $Change: 1390 $ $DateTime: 2003/03/22 22:04:23 $ vim: expandtab shiftwidth=4
+#line 1 "inc/Module/Install/Makefile.pm - /usr/local/lib/perl5/site_perl/5.8.0/Module/Install/Makefile.pm"
+# $File: //depot/cpan/Module-Install/lib/Module/Install/Makefile.pm $ $Author: iain $
+# $Revision: #41 $ $Change: 1502 $ $DateTime: 2003/05/13 01:28:08 $ vim: expandtab shiftwidth=4
 
 package Module::Install::Makefile;
 use Module::Install::Base; @ISA = qw(Module::Install::Base);
@@ -43,11 +44,15 @@ sub write {
 	$args->{ABSTRACT} = $self->abstract;
 	$args->{AUTHOR} = $self->author;
     }
+    if ( eval($ExtUtils::MakeMaker::VERSION) >= 6.10 )
+    {
+        $args->{NO_META} = 1;
+    }
 
     # merge both kinds of requires into prereq_pm
     my $prereq = ($args->{PREREQ_PM} ||= {});
-    %$prereq = ( %$prereq, map @$_, @{$self->$_} )
-        for grep $self->$_, qw(requires build_requires);
+    %$prereq = ( %$prereq, map { @{@{$_}} } grep $_,
+                 ($self->build_requires, $self->requires) );
 
     # merge both kinds of requires into prereq_pm
     my $dir = ($args->{DIR} ||= []);
@@ -103,3 +108,4 @@ sub postamble {
 
 __END__
 
+#line 240
