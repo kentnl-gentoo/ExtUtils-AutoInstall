@@ -1,11 +1,12 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AUTHORS $
-# $Revision: #2 $ $Change: 5439 $ $DateTime: 2003/04/22 09:54:35 $
+# $Revision: #3 $ $Change: 9083 $ $DateTime: 2003/11/29 19:51:07 $
 
 Here is a list of people and their CPAN id, extracted from the Changes
 file and the mailing list archives.  These people have either submitted
 patches or suggestions, or their bug reports or comments have inspired
 the appropriate patches.  Corrections, additions, deletions welcome:
 
+Alan Burlison
 Brian Ingerson		(INGY)
 Bryan Dumm
 Chia-Liang Kao		(CLKAO)

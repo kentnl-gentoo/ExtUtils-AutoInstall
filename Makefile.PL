@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/Makefile.PL $ $Author: autrijus $
-# $Revision: #10 $ $Change: 7914 $ $DateTime: 2003/09/06 14:42:30 $
+# $Revision: #11 $ $Change: 9085 $ $DateTime: 2003/11/29 19:52:42 $
 
 use inc::Module::Install;
 use lib 'lib';
@@ -32,7 +32,9 @@ features(
     ],
 );
 
+sign(1);
 check_nmake();
 auto_install();
+
 &Meta->write;
 &Makefile->write;

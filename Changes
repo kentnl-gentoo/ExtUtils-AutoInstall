@@ -1,4 +1,11 @@
 ____________________________________________________________________________
+[  9082] By: autrijus                              on 2003/11/29  19:45:05
+        Log: * This be 0.55.
+             * add Module::Install examples.
+	     * changed "failed!" to "missing." and "needs" to "would need"
+	       per suggestions from Alan Burlison.
+	   ! lib/ExtUtils/AutoInstall.pm
+____________________________________________________________________________
 [  8105] By: autrijus                              on 2003/09/13  20:57:40
         Log: * this be 0.54.
 	   ! lib/ExtUtils/AutoInstall.pm
