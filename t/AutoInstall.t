@@ -1,15 +1,15 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/t/AutoInstall.t $ $Author: autrijus $
-# $Revision: #4 $ $Change: 2602 $ $DateTime: 2001/12/14 07:42:01 $
+# $Revision: #5 $ $Change: 2822 $ $DateTime: 2002/01/09 18:54:08 $
 
 use strict;
 use Test;
 
-BEGIN { plan tests => 6; $^W = 0; };
+BEGIN { plan tests => 8; $^W = 0; };
 
 # Intercepts calls to WriteMakefile and prompt.
 my $mm_args;
-my @prompts = qw/n y y/;
+my @prompts = qw/y n n y y/;
 
 use ExtUtils::MakeMaker;
 sub ExtUtils::MakeMaker::WriteMakefile { $mm_args = {@_} }

@@ -1,10 +1,25 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/Makefile.PL $ $Author: autrijus $
-# $Revision: #3 $ $Change: 2153 $ $DateTime: 2001/10/19 08:44:50 $
+# $Revision: #4 $ $Change: 2748 $ $DateTime: 2001/12/30 03:27:51 $
 
 require 5.005;
+require 'AutoInstall.pm';
 
-use ExtUtils::MakeMaker;
+ExtUtils::AutoInstall->import(
+    -core			=> [
+	'Cwd'			=> '',
+	'Carp'			=> '',
+	'CPAN'			=> '',
+	'ExtUtils::Manifest'	=> '',
+	'ExtUtils::MakeMaker'	=> '',
+    ],
+    'CPANPLUS Support'		=> [
+	'CPANPLUS'		=> '',
+    ],
+    'Advanced version sorting'	=> [
+	'Sort::Versions'	=> '',
+    ],
+);
 
 WriteMakefile(
     AUTHOR		=> 'Autrijus Tang (autrijus@autrijus.org)',

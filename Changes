@@ -1,4 +1,24 @@
 ____________________________________________________________________________
+[  2818] By: autrijus                              on 2002/01/09  18:44:27
+        Log: * This be 0.26 of ExtUtils::AutoInstall.
+             * Implemented Ingy's suggestions:
+             * 1) bootstrap now prompts instead of silently grabs the module.
+             * 2) similarily, -version update also confirms with user.
+             * 3) -core now double-checks with user instead of force install.
+             * 4) introduced PERL_EXTUTILS_AUTOINSTALL environment variable.
+             * added --defaultdeps makefile.pl argument to accept default.
+             * the 'deps' part of arguments are now optional.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  2748] By: autrijus                              on 2001/12/30  03:27:51
+        Log: * uses itself to install itself.
+             * idea from Eric Andreychek: implement the 'force' pseudo-option.
+	   ! AutoInstall.pm Makefile.PL README
+____________________________________________________________________________
+[  2742] By: autrijus                              on 2001/12/29  05:03:22
+        Log: * changes.
+	   ! Changes
+____________________________________________________________________________
 [  2741] By: autrijus                              on 2001/12/29  04:53:34
         Log: * This be EU::AI 0.25.
              * implements --skipdeps, which skips -core and all dep checkings.
