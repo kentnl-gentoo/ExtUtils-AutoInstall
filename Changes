@@ -1,37 +1,72 @@
 ____________________________________________________________________________
-[  3827] By: autrijus                              on 2002/04/09  11:26:50
+[  4058] By: autrijus                              on 2002/04/30  16:34:09
+        Log: * This be AutoInstall 0.29.
+             * change the boostrap code to allow CPANPLUS.
+	   ! AutoInstall.pm Makefile.PL
+____________________________________________________________________________
+[  4024] By: autrijus                              on 2002/04/29  11:59:28
+        Log: * Sort::Versions thinks 0.55 > 0.7. Inexcusable.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3923] By: autrijus                              on 2002/04/20  08:04:17
+        Log: * check rv first
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3871] By: autrijus                              on 2002/04/12  15:58:29
+        Log: * the probing of installation success/failure for cpan+= was
+	     wrong.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3853] By: autrijus                              on 2002/04/10  13:59:20
+        Log: * I should be called Autrijus 'typo' Tang.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3851] By: autrijus                              on 2002/04/10  13:50:44
+        Log: * this be 0.29.
+             * be more 0.01 compatible.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3850] By: autrijus                              on 2002/04/10  13:47:03
+        Log: * don't use modobj methods that weren't available before 0.03.
+	   ! AutoInstall.pm
+____________________________________________________________________________
+[  3828] By: autrijus                              on 2002/04/09  18:27:41
+        Log: * changes.
+	   ! Changes
+____________________________________________________________________________
+[  3827] By: autrijus                              on 2002/04/09  18:26:50
         Log: * This be ExtUtils::AutoInstall 0.28, the version that went
 	     out
              with CPANPLUS 0.03.
 	   ! README
 ____________________________________________________________________________
-[  3818] By: autrijus                              on 2002/04/09  08:41:44
+[  3818] By: autrijus                              on 2002/04/09  15:41:44
         Log: * more 5.00x friendness.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  3817] By: autrijus                              on 2002/04/09  08:37:50
+[  3817] By: autrijus                              on 2002/04/09  15:37:50
         Log: * version bump.
              * pod corrections.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  3814] By: autrijus                              on 2002/04/09  08:19:42
+[  3814] By: autrijus                              on 2002/04/09  15:19:42
         Log: * version bump.
              * try to make perl 5.004 happy.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  3783] By: autrijus                              on 2002/04/08  19:12:49
+[  3783] By: autrijus                              on 2002/04/09  02:12:49
         Log: * oops! didn't really check for connectivity.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  3776] By: autrijus                              on 2002/04/08  07:21:24
+[  3776] By: autrijus                              on 2002/04/08  14:21:24
         Log: * changes.
 	   ! Changes
 ____________________________________________________________________________
-[  3775] By: autrijus                              on 2002/04/08  07:09:03
+[  3775] By: autrijus                              on 2002/04/08  14:09:03
         Log: * This be ExtUtils::AutoInstall, 0.27.
 	   ! README TODO
 ____________________________________________________________________________
-[  3716] By: autrijus                              on 2002/04/06  02:17:43
+[  3716] By: autrijus                              on 2002/04/06  10:17:43
         Log: * -core now takes 'all', which makes all features mandatory.
              * much better integration with CPANPLUS, including make
 	     options.
@@ -39,39 +74,39 @@ ____________________________________________________________________________
              * some more comments.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  3507] By: autrijus                              on 2002/03/21  20:25:04
+[  3507] By: autrijus                              on 2002/03/22  04:25:04
         Log: * tidying up the tesst case, from kane.
 	   ! t/AutoInstall.t
 ____________________________________________________________________________
-[  3409] By: autrijus                              on 2002/03/12  16:16:43
+[  3409] By: autrijus                              on 2002/03/13  00:16:43
         Log: * mfc from cpanplus.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  3404] By: autrijus                              on 2002/03/12  04:17:33
+[  3404] By: autrijus                              on 2002/03/12  12:17:33
         Log: * mfc from cpanplus.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  3064] By: autrijus                              on 2002/02/07  11:25:07
+[  3064] By: autrijus                              on 2002/02/07  19:25:07
         Log: * recognizes the old MY::postamble if present.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2834] By: autrijus                              on 2002/01/10  19:35:27
+[  2834] By: autrijus                              on 2002/01/11  03:35:27
         Log: * skip install if nothing is to be installed.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2833] By: autrijus                              on 2002/01/10  19:33:36
+[  2833] By: autrijus                              on 2002/01/11  03:33:36
         Log: * removes spurious installations.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2822] By: autrijus                              on 2002/01/09  18:54:08
+[  2822] By: autrijus                              on 2002/01/10  02:54:08
         Log: * updates test.
 	   ! t/AutoInstall.t
 ____________________________________________________________________________
-[  2819] By: autrijus                              on 2002/01/09  18:45:21
+[  2819] By: autrijus                              on 2002/01/10  02:45:21
         Log: * changes.
 	   ! Changes
 ____________________________________________________________________________
-[  2818] By: autrijus                              on 2002/01/09  18:44:27
+[  2818] By: autrijus                              on 2002/01/10  02:44:27
         Log: * This be 0.26 of ExtUtils::AutoInstall.
              * Implemented Ingy's suggestions:
              * 1) bootstrap now prompts instead of silently grabs the
@@ -85,85 +120,85 @@ ____________________________________________________________________________
              * the 'deps' part of arguments are now optional.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2748] By: autrijus                              on 2001/12/30  03:27:51
+[  2748] By: autrijus                              on 2001/12/30  11:27:51
         Log: * uses itself to install itself.
              * idea from Eric Andreychek: implement the 'force'
 	     pseudo-option.
 	   ! AutoInstall.pm Makefile.PL README
 ____________________________________________________________________________
-[  2742] By: autrijus                              on 2001/12/29  05:03:22
+[  2742] By: autrijus                              on 2001/12/29  13:03:22
         Log: * changes.
 	   ! Changes
 ____________________________________________________________________________
-[  2741] By: autrijus                              on 2001/12/29  04:53:34
+[  2741] By: autrijus                              on 2001/12/29  12:53:34
         Log: * This be EU::AI 0.25.
              * implements --skipdeps, which skips -core and all dep
 	     checkings.
              * POD update.
 	   ! AutoInstall.pm README
 ____________________________________________________________________________
-[  2683] By: autrijus                              on 2001/12/20  03:06:43
+[  2683] By: autrijus                              on 2001/12/20  11:06:43
         Log: * documents the recent additions.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2663] By: autrijus                              on 2001/12/18  05:49:07
+[  2663] By: autrijus                              on 2001/12/18  13:49:07
         Log: * makes the targets always available.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2640] By: autrijus                              on 2001/12/17  14:47:34
+[  2640] By: autrijus                              on 2001/12/17  22:47:34
         Log: * implements --installdeps and --checkdeps couresy of obra.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2626] By: autrijus                              on 2001/12/16  11:48:13
+[  2626] By: autrijus                              on 2001/12/16  19:48:13
         Log: * suggestion from obra: --checkdeps and checkdeps/installdeps
 	     targets.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2602] By: autrijus                              on 2001/12/14  07:42:01
+[  2602] By: autrijus                              on 2001/12/14  15:42:01
         Log: * updates autoinstall to use cpanplus by default.
              * remedy the test to accomodate for wrong globs.
 	   ! AutoInstall.pm t/AutoInstall.t
 ____________________________________________________________________________
-[  2600] By: autrijus                              on 2001/12/13  23:27:20
+[  2600] By: autrijus                              on 2001/12/14  07:27:20
         Log: * changes.
 	   ! Changes
 ____________________________________________________________________________
-[  2599] By: autrijus                              on 2001/12/13  23:26:30
+[  2599] By: autrijus                              on 2001/12/14  07:26:30
         Log: * this be 0.24 of EU::AI.
              * corrects test's recognition of t/AutoInstall.t.
              * shuns warnings.
 	   ! t/AutoInstall.t
 ____________________________________________________________________________
-[  2598] By: autrijus                              on 2001/12/13  23:21:33
+[  2598] By: autrijus                              on 2001/12/14  07:21:33
         Log: * delay autoinstall to the 'make config' time to make brev
 	     happy.
              * reflected this in the test.
 	   ! AutoInstall.pm t/AutoInstall.t
 ____________________________________________________________________________
-[  2251] By: autrijus                              on 2001/11/02  10:17:05
+[  2251] By: autrijus                              on 2001/11/02  18:17:05
         Log: * oops. the AutoInstall.pm failes to ackledge hash args.
              * reflect the changes in test.pl.
 	   ! AutoInstall.pm test.pl
 ____________________________________________________________________________
-[  2250] By: autrijus                              on 2001/11/02  09:31:30
+[  2250] By: autrijus                              on 2001/11/02  17:31:30
         Log: * added the missing '- ' before each module.
              * this be ExtUtils::AutoInstall v 0.23.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2227] By: autrijus                              on 2001/10/28  11:05:51
+[  2227] By: autrijus                              on 2001/10/28  19:05:51
         Log: * oops, didn't test for core features.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2226] By: autrijus                              on 2001/10/28  10:41:18
+[  2226] By: autrijus                              on 2001/10/28  18:41:18
         Log: * very esoteric way to determine max module length.
              * removed the padding spaces.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2159] By: autrijus                              on 2001/10/18  18:47:25
+[  2159] By: autrijus                              on 2001/10/19  01:47:25
         Log: * cleanup and changes.
 	   ! Changes MANIFEST
 ____________________________________________________________________________
-[  2155] By: autrijus                              on 2001/10/18  18:04:36
+[  2155] By: autrijus                              on 2001/10/19  01:04:36
         Log: * This be ExtUtils::AutoInstall 0.23.
              * more robust bootstrap code sample.
              * put brief introductory text into README.
@@ -171,32 +206,32 @@ ____________________________________________________________________________
 	   + TODO
 	   ! AutoInstall.pm README
 ____________________________________________________________________________
-[  2154] By: autrijus                              on 2001/10/18  17:47:48
+[  2154] By: autrijus                              on 2001/10/19  00:47:48
         Log: * version number crept in test. bad.
 	   ! test.pl
 ____________________________________________________________________________
-[  2153] By: autrijus                              on 2001/10/18  17:44:50
+[  2153] By: autrijus                              on 2001/10/19  00:44:50
         Log: * do away with Test::More; too much hassle.
              * mentioned schwern's license.
 	   ! AutoInstall.pm Makefile.PL test.pl
 ____________________________________________________________________________
-[  2151] By: autrijus                              on 2001/10/18  15:24:00
+[  2151] By: autrijus                              on 2001/10/18  22:24:00
         Log: * uses _prompt to improve clarity.
              * needs Test::More 0.31+ to test things now.
              * revised test to ensure the promised interface on POD works.
 	   ! AutoInstall.pm Makefile.PL test.pl
 ____________________________________________________________________________
-[  2145] By: autrijus                              on 2001/10/18  02:17:08
+[  2145] By: autrijus                              on 2001/10/18  09:17:08
         Log: * everything goes to STDOUT now.
              * skips unknown directives. (XXX: maybe should warn)
              * fix non-numeric comparison.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2133] By: autrijus                              on 2001/10/17  16:39:51
+[  2133] By: autrijus                              on 2001/10/17  23:39:51
         Log: * de-bump.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2132] By: autrijus                              on 2001/10/17  16:39:28
+[  2132] By: autrijus                              on 2001/10/17  23:39:28
         Log: * inhibits CPAN startup message.
              * new feature: -config could now be used to specify
 	     CPAN::Config options.
@@ -204,36 +239,36 @@ ____________________________________________________________________________
 	     hashrefs too.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2130] By: autrijus                              on 2001/10/17  16:00:41
+[  2130] By: autrijus                              on 2001/10/17  23:00:41
         Log: * solves the UNINST=0 problem manually.
              * makes 5.005_03 happy with us.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2120] By: autrijus                              on 2001/10/16  16:18:54
+[  2120] By: autrijus                              on 2001/10/16  23:18:54
         Log: * changes.
 	   ! Changes
 ____________________________________________________________________________
-[  2119] By: autrijus                              on 2001/10/16  16:16:17
+[  2119] By: autrijus                              on 2001/10/16  23:16:17
         Log: * This be ExtUtils::AutoInstall v0.21, compatibility release.
              * (v0.2 used to break against OurNet::BBS v1.62.)
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2118] By: autrijus                              on 2001/10/16  16:13:43
+[  2118] By: autrijus                              on 2001/10/16  23:13:43
         Log: * bugward combatibility.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2115] By: autrijus                              on 2001/10/16  15:31:33
+[  2115] By: autrijus                              on 2001/10/16  22:31:33
         Log: * self-bootstrapping code, a really funky feature.
 	   ! AutoInstall.pm
 ____________________________________________________________________________
-[  2108] By: autrijus                              on 2001/10/16  11:56:56
+[  2108] By: autrijus                              on 2001/10/16  18:56:56
         Log: * oops.
 	   ! README
 ____________________________________________________________________________
-[  2107] By: autrijus                              on 2001/10/16  11:55:21
+[  2107] By: autrijus                              on 2001/10/16  18:55:21
         Log: * changes.
 	   ! Changes
 ____________________________________________________________________________
-[  2104] By: autrijus                              on 2001/10/16  11:49:40
+[  2104] By: autrijus                              on 2001/10/16  18:49:40
         Log: * a separate distro: AutoInstall.
 	   + AutoInstall.pm Changes MANIFEST Makefile.PL README test.pl

@@ -1,8 +1,8 @@
 # $File: //member/autrijus/ExtUtils-AutoInstall/AutoInstall.pm $ 
-# $Revision: #37 $ $Change: 3818 $ $DateTime: 2002/04/09 08:41:44 $
+# $Revision: #44 $ $Change: 4058 $ $DateTime: 2002/04/30 16:34:09 $
 
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.28';
+$ExtUtils::AutoInstall::VERSION = '0.29';
 
 use strict;
 
@@ -15,20 +15,22 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.28 of B<ExtUtils::AutoInstall>.
+This document describes version 0.29 of B<ExtUtils::AutoInstall>,
+released April 30, 2002.
 
 =head1 SYNOPSIS
 
 In F<Makefile.PL>:
 
-    # ExtUtils::AutoInstall Bootstrap Code, version 2.
-    BEGIN {my($p,$v)=('ExtUtils::AutoInstall',0.21);eval"use $p $v;1"or
-    print"==> $p $v is needed. Install automatically? [Y/n] "and<STDIN>
-    !~/^n/i and print"*** Fetching $p.\n"and require CPAN,CPAN::install
-    $p;eval"use $p $v;1" or die "*** Please install $p $v manually.\n"}
+    # ExtUtils::AutoInstall Bootstrap Code, version 3.
+    BEGIN{my$p='ExtUtils::AutoInstall';my$v=.29;eval"use $p $v;1"or
+    print"==> $p $v needed. Install it from CPAN? [Y/n] "and<STDIN>
+    !~/^n/i and print"*** Fetching $p.\n"and(eval{require CPANPLUS;
+    CPANPLUS::install$p}||eval{require CPAN,CPAN::install$p});eval"
+    use $p $v;1"or die"*** Please install $p $v manually first.\n"}
 
     use ExtUtils::AutoInstall (
-	-version	=> '0.21',	# required AutoInstall version
+	-version	=> '0.29',	# required AutoInstall version
 	-config		=> {
 	    make_args	=> '--hello'	# option(s) for CPAN::Config 
 	    force	=> 1,		# pseudo-option to force install
@@ -414,14 +416,14 @@ sub _install_cpanplus {
 		delete $INC{$inc};
 	    }
 
-	    my $i; # used below to strip leading '-' from config keys
-	    
-	    if ($obj->install(@config)) {
+	    my $rv = $cp->install( modules => [ $obj->{module} ], @config);
+
+	    if ($rv and $rv->{$obj->{module}}) {
 		$installed++;
 		print "*** $pkg successfully installed.\n";
 	    }
 	    else {
-		print "*** $pkg installation failed.\n";
+		print "*** $pkg installation cancelled.\n";
 	    }
 	}
 	else {
@@ -575,14 +577,14 @@ sub _version_check {
     my ($cur, $min) = @_; $cur =~ s/\s+$//;
 
     if ($Sort::Versions::VERSION or defined(_load('Sort::Versions'))) {
-	# use Sort::Versions as the sorting algorithm 
-	return ((Sort::Versions::versioncmp($cur, $min) != -1) ? $cur : undef);
+	# use Sort::Versions as the sorting algorithm for a.b.c versions
+	return ((Sort::Versions::versioncmp($cur, $min) != -1) ? $cur : undef)
+	    if $cur =~ /\..*\./ or $min =~ /\..*\./;
     }
-    else {
-	# plain comparison
-	local $^W = 0; # shuts off 'not numeric' bugs
-	return ($cur >= $min ? $cur : undef);
-    }
+
+    # plain comparison
+    local $^W = 0; # shuts off 'not numeric' bugs
+    return ($cur >= $min ? $cur : undef);
 }
 
 # nothing; this usage is deprecated.

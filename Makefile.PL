@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # $File: //member/autrijus/ExtUtils-AutoInstall/Makefile.PL $ $Author: autrijus $
-# $Revision: #4 $ $Change: 2748 $ $DateTime: 2001/12/30 03:27:51 $
+# $Revision: #5 $ $Change: 4058 $ $DateTime: 2002/04/30 16:34:09 $
 
 require 5.005;
 require 'AutoInstall.pm';
@@ -9,15 +9,18 @@ ExtUtils::AutoInstall->import(
     -core			=> [
 	'Cwd'			=> '',
 	'Carp'			=> '',
-	'CPAN'			=> '',
 	'ExtUtils::Manifest'	=> '',
 	'ExtUtils::MakeMaker'	=> '',
     ],
     'CPANPLUS Support'		=> [
-	'CPANPLUS'		=> '',
+	'CPANPLUS'		=> 0.032,
+    ],
+    'CPAN.pm Support'		=> [
+	-default		=> 0,
+	'CPAN'			=> 1.0,
     ],
     'Advanced version sorting'	=> [
-	'Sort::Versions'	=> '',
+	'Sort::Versions'	=> 1.2,
     ],
 );
 
@@ -30,7 +33,7 @@ WriteMakefile(
     BINARY_LOCATION	=> 'x86/ExtUtils-AutoInstall.tar.gz',
 
     dist		=> {
-        COMPRESS	=> 'gzip',
+        COMPRESS	=> 'gzip -9',
         SUFFIX		=> '.gz',
     },
 );
