@@ -1,36 +1,33 @@
-# $File: //member/autrijus/ExtUtils-AutoInstall/README $ $Author: autrijus $
-# $Revision: #4 $ $Change: 9532 $ $DateTime: 2004/01/01 06:47:30 $
-
 This is the README file for ExtUtils::AutoInstall, a module to
 let Makefile.PL automatically install dependencies via CPAN or
 CPANPLUS.
 
-* Features
+= Features
 
-- Letting the user enable/disable optional dependencies.
-- Support sane defaults by probing for the machine's capability.
-- If not inside a cpan shell, use CPAN.pm to install dependencies.
-- Enable/disable the associated tests automatically.
-- Supply UNINST=1 when it is safe and possibly needed.
-- Checks MANIFEST to avoid unnecessary grepping of EXE_FILES.
-- Utilizes CPANPLUS and/or Sort::Versions where feasible.
-- Offers check-only and skip-all Makefile.PL targets.
-- Offers check-only and install-only Makefile targets.
-- Take advantage of the 'sudo' command where available.
+* Letting the user enable/disable optional dependencies.
+* Support sane defaults by probing for the machine's capability.
+* If not inside a cpan shell, use CPAN.pm to install dependencies.
+* Enable/disable the associated tests automatically.
+* Supply UNINST=1 when it is safe and possibly needed.
+* Checks MANIFEST to avoid unnecessary grepping of EXE_FILES.
+* Utilizes CPANPLUS and/or Sort::Versions where feasible.
+* Offers check-only and skip-all Makefile.PL targets.
+* Offers check-only and install-only Makefile targets.
+* Take advantage of the 'sudo' command where available.
 
-* Installation
+= Installation
 
 ExtUtils::AutoInstall uses the standard perl module install process:
 
-cpansign -v		# optional; see SIGNATURE for details
-perl Makefile.PL
-make			# or 'nmake' on Win32
-make test
-make install
+    cpansign -v         # optional; see SIGNATURE for details
+    perl Makefile.PL
+    make                # or 'nmake' on Win32
+    make test
+    make install
 
-* Copyright
+= Copyright
 
-Copyright 2001, 2002, 2003, 2004 by Autrijus Tang <autrijus@autrijus.org>.
+Copyright 2001, 2002, 2003, 2004, 2005 by Autrijus Tang <autrijus@autrijus.org>.
 
 All rights reserved.  You can redistribute and/or modify
 this bundle under the same terms as Perl itself.

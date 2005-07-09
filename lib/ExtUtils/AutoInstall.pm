@@ -1,8 +1,5 @@
-# $File: //member/autrijus/ExtUtils-AutoInstall/lib/ExtUtils/AutoInstall.pm $ 
-# $Revision: #14 $ $Change: 10538 $ $DateTime: 2004/04/29 17:55:36 $ vim: expandtab shiftwidth=4
-
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.61';
+$ExtUtils::AutoInstall::VERSION = '0.62';
 
 use strict;
 use Cwd ();
@@ -14,8 +11,8 @@ ExtUtils::AutoInstall - Automatic install of dependencies via CPAN
 
 =head1 VERSION
 
-This document describes version 0.61 of B<ExtUtils::AutoInstall>,
-released October 19, 2004.
+This document describes version 0.62 of B<ExtUtils::AutoInstall>,
+released July 9, 2005.
 
 =head1 SYNOPSIS
 
@@ -652,8 +649,10 @@ sub _install_cpan {
     my %args;
 
     require CPAN; CPAN::Config->load;
+    require Config;
 
-    return unless _can_write(MM->catfile($CPAN::Config->{cpan_home}, 'sources'));
+    return unless _can_write(MM->catfile($CPAN::Config->{cpan_home}, 'sources'))
+              and _can_write($Config::Config{sitelib});
 
     # if we're root, set UNINST=1 to avoid trouble unless user asked for it.
     my $makeflags = $CPAN::Config->{make_install_arg} || '';
@@ -783,8 +782,7 @@ sub _can_write {
     my $path = shift;
     mkdir ($path, 0755) unless -e $path;
 
-    require Config;
-    return 1 if -w $path and -w $Config::Config{sitelib};
+    return 1 if -w $path;
 
     print << ".";
 *** You are not allowed to write to the directory '$path';

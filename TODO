@@ -1,6 +1,3 @@
-# $File: //member/autrijus/ExtUtils-AutoInstall/TODO $ $Author: autrijus $
-# $Revision: #3 $ $Change: 2916 $ $DateTime: 2002/12/25 11:20:00 $
-
 - Request for a specific version instead of the latest.
 - A cleaner self-boostrap block.
 - Default autoconf-like test utilities.
