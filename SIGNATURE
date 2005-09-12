@@ -14,28 +14,30 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 7ba9cf0b9ed91df0fc739f5c9376d7894272f753 AUTHORS
-SHA1 c41657d877eaa4c6945382e102e0fcc89b674930 Changes
-SHA1 74dbca10a12501222efc9a53628ec7becb6c23d8 MANIFEST
-SHA1 57e3bb2f2613ed24e70fe6632506010146e4bdd9 META.yml
+SHA1 48ba7b9b0070b50c16b518dc1c21436efb31a421 AUTHORS
+SHA1 17a14654729486e47bb2c4cf91623f16c27da833 Changes
+SHA1 556c1a8dc5692d7c982589b45de392018810ae90 MANIFEST
+SHA1 7962ab6d905fa834373f87d4ae6fd53584617952 META.yml
 SHA1 154b71228e053034fa0ee626ec72b6d8620cf8e2 Makefile.PL
 SHA1 9e96a3756898d07e6f9932e6f1acc21ecbec5dfa README
 SHA1 e7326dddbecb834552e8392824a286515385013e TODO
-SHA1 06d883487127fa0026311904e7c4867e850c505c inc/Module/Install.pm
-SHA1 25c1920fccb1077b2e11ed0f18df50089d2beb5d inc/Module/Install/AutoInstall.pm
-SHA1 2771d5c5033e94c4789c66a0aad4e21c62985ce9 inc/Module/Install/Base.pm
-SHA1 b5e2d5fc07b92d042c97631d2b00f61f974fc164 inc/Module/Install/Can.pm
-SHA1 c3747aa4bd8faa530c974b78f729c67f15c6f928 inc/Module/Install/Fetch.pm
-SHA1 d8bc0d6e0a82d2b7533bdd3de467593094cc8b2c inc/Module/Install/Makefile.pm
-SHA1 6fca1d05c6b9a8f10865de5be4fefb9bfa7a52e9 inc/Module/Install/Metadata.pm
-SHA1 6b051a6d3ed824df40343a7ff09b66282e1783c3 inc/Module/Install/Win32.pm
-SHA1 77f82ce7c623e05304ac9aae05bcd1a5558fadbb inc/Module/Install/WriteAll.pm
-SHA1 4bb054448c556559f6acf6c8bf9888224f6872ea lib/ExtUtils/AutoInstall.pm
+SHA1 c9a5c36ff588a3fbbe37ff8660b6830f9368748f inc/ExtUtils/AutoInstall.pm
+SHA1 19e565da4e1516f3e722d54142e715eae98b6fd9 inc/Module/Install.pm
+SHA1 485d8ff10f85ab63ab4d29b77eccd298043a692e inc/Module/Install/AutoInstall.pm
+SHA1 a7f7e2bfb0ac6f8ad965832ef3a246a7bd433058 inc/Module/Install/Base.pm
+SHA1 7b0e82ea99187c2121bfc8fe590de8363e8100d7 inc/Module/Install/Can.pm
+SHA1 d097dedadac0edcafbee3a14c262e24089f5795e inc/Module/Install/Fetch.pm
+SHA1 08bfc9e53d1e15f5556c9d282a7db70a68b9ff06 inc/Module/Install/Include.pm
+SHA1 69b187644e08b73ab9ffbcb61ee51291e693685f inc/Module/Install/Makefile.pm
+SHA1 7298762404963528a5abcb0fa76cfe12afb9b87c inc/Module/Install/Metadata.pm
+SHA1 8ee248d67d4c61a4f01e6a96c41afbd93be4c9ef inc/Module/Install/Win32.pm
+SHA1 3c099dd7fb73a49bcc489b152c3ca3c7a1b36427 inc/Module/Install/WriteAll.pm
+SHA1 223fde4939b1710719e77871348fd82a3d42c021 lib/ExtUtils/AutoInstall.pm
 SHA1 907a089e21ac3559ca99033e066535491321e601 t/1-basic.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.6 (FreeBSD)
+Version: GnuPG v1.4.2 (FreeBSD)
 
-iD8DBQFCzz3KtLPdNzw1AaARAvunAJ0YdxPt6iF8PSSmTFFQk2iIuir4WACdEOwl
-J+2NVmMGIu2ta0lAUbxgv0g=
-=5j9f
+iD8DBQFDJYDItLPdNzw1AaARAtweAJ4lHLNfzQPBYice2wJK7H+5hru+mQCbBP4f
+rfG8NxpkJ/O4UCSYU/weHqI=
+=3WyS
 -----END PGP SIGNATURE-----
