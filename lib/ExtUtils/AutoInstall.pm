@@ -1,5 +1,5 @@
 package ExtUtils::AutoInstall;
-$ExtUtils::AutoInstall::VERSION = '0.63';
+$ExtUtils::AutoInstall::VERSION = '0.64';
 
 use strict;
 use Cwd ();
@@ -966,7 +966,7 @@ Autrijus Tang E<lt>autrijus@autrijus.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 2001, 2002, 2003, 2004
+Copyright 2001, 2002, 2003, 2004, 2005, 2016
 by Autrijus Tang E<lt>autrijus@autrijus.orgE<gt>.
 
 This program is free software; you can redistribute it and/or
