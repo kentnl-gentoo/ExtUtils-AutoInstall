@@ -1,7 +1,6 @@
 #!/usr/bin/perl
-
+use lib '.', 'lib';
 use inc::Module::Install;
-use lib 'lib';
 
 name            ('ExtUtils-AutoInstall');
 abstract        ('Automatic install of dependencies via CPAN');
